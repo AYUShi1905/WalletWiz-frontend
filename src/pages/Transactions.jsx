@@ -177,7 +177,7 @@ const Transactions = () => {
       case 'UPI':
         return <Landmark className="h-5 w-5 text-emerald-400" />;
       case 'CARD':
-        return <CreditCard className="h-5 w-5 text-blue-400" />;
+        return <CreditCard className="h-5 w-5 text-indigo-400" />;
       case 'CASH':
       default:
         return <Banknote className="h-5 w-5 text-amber-400" />;
@@ -217,7 +217,7 @@ const Transactions = () => {
 
       {/* Collapsible Filter Bar */}
       {showFilters && (
-        <div className="backdrop-blur-md bg-slate-900/90 border border-white/10 rounded-2xl p-4 space-y-4 shadow-xl animate-fade-in">
+        <div className="backdrop-blur-md bg-slate-900/90 border border-white/5 rounded-2xl p-4 space-y-4 shadow-xl animate-fade-in">
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider">Filters</h3>
             <button onClick={resetFilters} className="text-[10px] text-brand-accent font-semibold hover:underline">
@@ -232,7 +232,7 @@ const Transactions = () => {
               <select
                 value={categoryFilter}
                 onChange={(e) => { setCategoryFilter(e.target.value); setCurrentPage(1); }}
-                className="w-full bg-slate-900 border border-white/10 rounded-xl px-2 py-2 text-xs text-slate-200 focus:border-brand-accent outline-none"
+                className="w-full bg-slate-950 border border-white/5 rounded-xl px-2 py-2 text-xs text-slate-200 focus:border-brand-accent outline-none"
               >
                 <option value="">All Categories</option>
                 {CATEGORIES.map((cat) => (
@@ -247,7 +247,7 @@ const Transactions = () => {
               <select
                 value={paymentFilter}
                 onChange={(e) => { setPaymentFilter(e.target.value); setCurrentPage(1); }}
-                className="w-full bg-slate-900 border border-white/10 rounded-xl px-2 py-2 text-xs text-slate-200 focus:border-brand-accent outline-none"
+                className="w-full bg-slate-950 border border-white/5 rounded-xl px-2 py-2 text-xs text-slate-200 focus:border-brand-accent outline-none"
               >
                 <option value="">All Methods</option>
                 {PAYMENT_METHODS.map((pm) => (
@@ -263,7 +263,7 @@ const Transactions = () => {
                 type="date"
                 value={startDate}
                 onChange={(e) => { setStartDate(e.target.value); setCurrentPage(1); }}
-                className="w-full bg-slate-900 border border-white/10 rounded-xl px-2 py-2 text-xs text-slate-200 focus:border-brand-accent outline-none"
+                className="w-full bg-slate-950 border border-white/5 rounded-xl px-2 py-2 text-xs text-slate-200 focus:border-brand-accent outline-none"
               />
             </div>
             <div>
@@ -272,7 +272,7 @@ const Transactions = () => {
                 type="date"
                 value={endDate}
                 onChange={(e) => { setEndDate(e.target.value); setCurrentPage(1); }}
-                className="w-full bg-slate-900 border border-white/10 rounded-xl px-2 py-2 text-xs text-slate-200 focus:border-brand-accent outline-none"
+                className="w-full bg-slate-950 border border-white/5 rounded-xl px-2 py-2 text-xs text-slate-200 focus:border-brand-accent outline-none"
               />
             </div>
           </div>
@@ -299,7 +299,7 @@ const Transactions = () => {
           {transactions.map((tx) => (
             <div 
               key={tx.id} 
-              className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-4 shadow-md flex items-center justify-between gap-4 active:bg-white/10 transition-colors"
+              className="backdrop-blur-md bg-slate-900/40 border border-white/5 rounded-2xl p-4 shadow-md flex items-center justify-between gap-4 active:bg-white/10 transition-colors"
             >
               {/* Left Details */}
               <div className="flex items-center gap-3 min-w-0" onClick={() => openEditModal(tx)}>
@@ -362,7 +362,7 @@ const Transactions = () => {
       {/* Floating Action Button (FAB) for adding new transaction */}
       <button
         onClick={openAddModal}
-        className="fixed bottom-20 right-4 z-40 bg-brand-accent p-4 rounded-full text-white shadow-xl shadow-brand-accent/30 hover:scale-105 active:scale-95 transition-all duration-300 border border-brand-accent/20"
+        className="fixed bottom-24 right-4 z-40 bg-gradient-to-tr from-indigo-500 to-violet-600 p-4 rounded-full text-white shadow-xl shadow-indigo-500/30 hover:scale-105 active:scale-95 transition-all duration-300 border border-indigo-500/20"
       >
         <Plus className="h-6 w-6" />
       </button>
@@ -374,7 +374,7 @@ const Transactions = () => {
           <div className="flex-1" onClick={closeFormModal}></div>
 
           {/* Bottom Sheet Drawer */}
-          <div className="bg-slate-900 border-t border-white/10 rounded-t-3xl p-6 shadow-2xl max-h-[85vh] overflow-y-auto animate-slide-up">
+          <div className="bg-slate-950 border-t border-white/5 rounded-t-3xl p-6 shadow-2xl max-h-[85vh] overflow-y-auto animate-slide-up">
             <div className="flex items-center justify-between pb-4 border-b border-white/5 mb-5">
               <h2 className="text-lg font-bold text-slate-100">
                 {editingId ? 'Edit Transaction' : 'Log Transaction'}
@@ -401,7 +401,7 @@ const Transactions = () => {
                   placeholder="e.g. Starbucks, Pizza Hut"
                   value={merchant}
                   onChange={(e) => setMerchant(e.target.value)}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:border-brand-accent outline-none text-slate-100"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/5 rounded-xl focus:border-brand-accent outline-none text-slate-100"
                 />
               </div>
 
@@ -419,7 +419,7 @@ const Transactions = () => {
                     placeholder="0.00"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:border-brand-accent outline-none text-slate-100"
+                    className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/5 rounded-xl focus:border-brand-accent outline-none text-slate-100"
                   />
                 </div>
               </div>
@@ -430,7 +430,7 @@ const Transactions = () => {
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-slate-200 focus:border-brand-accent outline-none"
+                  className="w-full bg-slate-900 border border-white/5 rounded-xl px-4 py-3 text-slate-200 focus:border-brand-accent outline-none"
                 >
                   {CATEGORIES.map((cat) => (
                     <option key={cat} value={cat}>{cat}</option>
@@ -444,7 +444,7 @@ const Transactions = () => {
                 <select
                   value={paymentMethod}
                   onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-3 text-slate-200 focus:border-brand-accent outline-none"
+                  className="w-full bg-slate-900 border border-white/5 rounded-xl px-4 py-3 text-slate-200 focus:border-brand-accent outline-none"
                 >
                   {PAYMENT_METHODS.map((pm) => (
                     <option key={pm} value={pm}>{pm}</option>
@@ -460,7 +460,7 @@ const Transactions = () => {
                   required
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:border-brand-accent outline-none text-slate-100"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/5 rounded-xl focus:border-brand-accent outline-none text-slate-100"
                 />
               </div>
 
@@ -472,7 +472,7 @@ const Transactions = () => {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   rows={2}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:border-brand-accent outline-none text-slate-100 resize-none"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/5 rounded-xl focus:border-brand-accent outline-none text-slate-100 resize-none"
                 ></textarea>
               </div>
 
@@ -480,7 +480,7 @@ const Transactions = () => {
               <button
                 type="submit"
                 disabled={formSubmitting}
-                className="w-full py-3 bg-brand-accent hover:bg-brand-accent/90 text-white font-semibold rounded-xl transition-colors shadow-lg shadow-brand-accent/25 flex items-center justify-center gap-2"
+                className="w-full py-3 bg-brand-accent hover:bg-brand-accent/90 text-white font-semibold rounded-xl transition-colors shadow-lg shadow-indigo-500/25 flex items-center justify-center gap-2"
               >
                 {formSubmitting && <Loader className="animate-spin h-4 w-4" />}
                 {editingId ? 'Save Changes' : 'Log Expense'}
@@ -494,13 +494,13 @@ const Transactions = () => {
       {deleteId && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-end">
           <div className="flex-1" onClick={() => setDeleteId(null)}></div>
-          <div className="bg-slate-900 border-t border-white/10 rounded-t-3xl p-6 shadow-2xl animate-slide-up">
+          <div className="bg-slate-950 border-t border-white/5 rounded-t-3xl p-6 shadow-2xl animate-slide-up">
             <h3 className="text-base font-extrabold text-slate-100 mb-2">Delete Transaction?</h3>
             <p className="text-slate-400 text-xs mb-6">Are you sure you want to delete this record? This action cannot be undone.</p>
             <div className="flex gap-3">
               <button
                 onClick={() => setDeleteId(null)}
-                className="w-1/2 py-3 bg-white/5 border border-white/10 text-slate-300 font-semibold rounded-xl text-xs animate-pulse"
+                className="w-1/2 py-3 bg-white/5 border border-white/5 text-slate-300 font-semibold rounded-xl text-xs"
               >
                 Cancel
               </button>

@@ -3,8 +3,8 @@ import api from '../services/api';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, PieChart, Pie, Cell, BarChart, Bar } from 'recharts';
 import { TrendingUp, DollarSign, Calendar, Landmark, CreditCard, Banknote, Receipt, AlertCircle, Loader } from 'lucide-react';
 
-// Custom Chart Colors (Vibrant Blue, Cyan, Emerald, Amber, Rose, Violet, Slate)
-const CHART_COLORS = ['#3B82F6', '#06B6D4', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#64748B'];
+// Custom Chart Colors (Indigo, Violet, Rose, Amber, Emerald, Cyan, Slate)
+const CHART_COLORS = ['#6366F1', '#8B5CF6', '#F43F5E', '#F59E0B', '#10B981', '#06B6D4', '#64748B'];
 
 const Dashboard = () => {
   const [timeframe, setTimeframe] = useState('this-month');
@@ -54,7 +54,7 @@ const Dashboard = () => {
       case 'UPI':
         return <Landmark className="h-4 w-4 text-emerald-400" />;
       case 'CARD':
-        return <CreditCard className="h-4 w-4 text-blue-400" />;
+        return <CreditCard className="h-4 w-4 text-indigo-400" />;
       case 'CASH':
       default:
         return <Banknote className="h-4 w-4 text-amber-400" />;
@@ -97,7 +97,7 @@ const Dashboard = () => {
         </div>
 
         {/* Horizontal Scroll Pill Toggles */}
-        <div className="flex bg-slate-900/60 p-1 rounded-xl border border-white/5 w-full justify-between">
+        <div className="flex bg-slate-950/60 p-1 rounded-xl border border-white/5 w-full justify-between">
           {[
             { value: 'this-month', label: 'This Month' },
             { value: 'last-30-days', label: '30 Days' },
@@ -106,9 +106,9 @@ const Dashboard = () => {
             <button
               key={item.value}
               onClick={() => setTimeframe(item.value)}
-              className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all duration-300 text-center ${
+              className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all duration-300 text-center ${
                 timeframe === item.value
-                  ? 'bg-brand-accent text-white shadow-md shadow-brand-accent/20'
+                  ? 'bg-brand-accent text-white shadow-md shadow-indigo-500/20'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
@@ -128,7 +128,7 @@ const Dashboard = () => {
       {/* Metrics Cards Stacks (Single Column) */}
       <div className="space-y-3">
         {/* Total Spent Card */}
-        <div className="relative overflow-hidden backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-5 shadow-md flex items-center justify-between">
+        <div className="relative overflow-hidden backdrop-blur-md bg-slate-900/40 border border-white/5 rounded-2xl p-5 shadow-md flex items-center justify-between">
           <div>
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Total Spent</span>
             <span className="text-2xl font-extrabold text-slate-100 block mt-1">
@@ -141,21 +141,21 @@ const Dashboard = () => {
         </div>
 
         {/* Daily Average Card */}
-        <div className="relative overflow-hidden backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-5 shadow-md flex items-center justify-between">
+        <div className="relative overflow-hidden backdrop-blur-md bg-slate-900/40 border border-white/5 rounded-2xl p-5 shadow-md flex items-center justify-between">
           <div>
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Daily Average</span>
             <span className="text-2xl font-extrabold text-slate-100 block mt-1">
               {formatCurrency(data?.daily_average)}
             </span>
           </div>
-          <div className="bg-cyan-500/10 p-3.5 rounded-xl text-cyan-400 border border-cyan-500/10">
+          <div className="bg-violet-500/10 p-3.5 rounded-xl text-violet-400 border border-violet-500/10">
             <TrendingUp className="h-5 w-5" />
           </div>
         </div>
       </div>
 
       {/* Daily Spending Trend Area Chart */}
-      <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-4 shadow-md">
+      <div className="backdrop-blur-md bg-slate-900/40 border border-white/5 rounded-2xl p-4 shadow-md">
         <div className="flex items-center gap-1.5 mb-3">
           <Calendar className="h-4 w-4 text-brand-accent" />
           <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider">Spending Trend</h3>
@@ -166,19 +166,19 @@ const Dashboard = () => {
               <AreaChart data={trendData} margin={{ top: 10, right: 5, left: -25, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#3B82F6" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#6366F1" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#6366F1" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
                 <XAxis dataKey="date" stroke="#94a3b8" fontSize={9} tickLine={false} axisLine={false} />
                 <YAxis stroke="#94a3b8" fontSize={9} tickLine={false} axisLine={false} />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                  contentStyle={{ backgroundColor: '#0f172a', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '12px' }}
                   labelStyle={{ color: '#94a3b8', fontSize: '9px' }}
                   itemStyle={{ color: '#fff', fontSize: '11px' }}
                   formatter={(value) => [formatCurrency(value), 'Spent']}
                 />
-                <Area type="monotone" dataKey="amount" stroke="#3B82F6" strokeWidth={2} fillOpacity={1} fill="url(#colorAmount)" />
+                <Area type="monotone" dataKey="amount" stroke="#6366F1" strokeWidth={2} fillOpacity={1} fill="url(#colorAmount)" />
               </AreaChart>
             </ResponsiveContainer>
           ) : (
@@ -188,7 +188,7 @@ const Dashboard = () => {
       </div>
 
       {/* Spending by Category Donut Chart */}
-      <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-4 shadow-md">
+      <div className="backdrop-blur-md bg-slate-900/40 border border-white/5 rounded-2xl p-4 shadow-md">
         <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider mb-3">By Category</h3>
         <div className="h-[220px] w-full flex flex-col justify-center">
           {categoryData.length > 0 ? (
@@ -208,7 +208,7 @@ const Dashboard = () => {
                       ))}
                     </Pie>
                     <Tooltip 
-                      contentStyle={{ backgroundColor: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                      contentStyle={{ backgroundColor: '#0f172a', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '12px' }}
                       itemStyle={{ color: '#fff', fontSize: '11px' }}
                       formatter={(value) => [formatCurrency(value), '']}
                     />
@@ -219,7 +219,7 @@ const Dashboard = () => {
               <div className="mt-3 grid grid-cols-2 gap-1.5 max-h-[70px] overflow-y-auto pr-1">
                 {categoryData.map((item, index) => (
                   <div key={item.name} className="flex items-center gap-1.5 text-[10px] text-slate-400">
-                    <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: CHART_COLORS[index % CHART_COLORS.length] }}></span>
+                    <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: CHART_COLORS[index % CHART_COLORS.length] }}></span>
                     <span className="truncate">{item.name} ({item.percentage}%)</span>
                   </div>
                 ))}
@@ -232,7 +232,7 @@ const Dashboard = () => {
       </div>
 
       {/* Spending by Payment Method Bar Chart */}
-      <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-4 shadow-md">
+      <div className="backdrop-blur-md bg-slate-900/40 border border-white/5 rounded-2xl p-4 shadow-md">
         <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider mb-3">By Payment Method</h3>
         <div className="h-[180px] w-full">
           {paymentData.length > 0 ? (
@@ -241,13 +241,13 @@ const Dashboard = () => {
                 <XAxis dataKey="name" stroke="#94a3b8" fontSize={9} tickLine={false} axisLine={false} />
                 <YAxis stroke="#94a3b8" fontSize={9} tickLine={false} axisLine={false} />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                  contentStyle={{ backgroundColor: '#0f172a', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '12px' }}
                   itemStyle={{ color: '#fff', fontSize: '11px' }}
                   formatter={(value) => [formatCurrency(value), 'Total']}
                 />
                 <Bar dataKey="value" radius={[4, 4, 0, 0]}>
                   {paymentData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={CHART_COLORS[(index + 3) % CHART_COLORS.length]} />
+                    <Cell key={`cell-${index}`} fill={CHART_COLORS[(index + 1) % CHART_COLORS.length]} />
                   ))}
                 </Bar>
               </BarChart>
@@ -259,7 +259,7 @@ const Dashboard = () => {
       </div>
 
       {/* Recent Transactions Mobile List */}
-      <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-4 shadow-md">
+      <div className="backdrop-blur-md bg-slate-900/40 border border-white/5 rounded-2xl p-4 shadow-md">
         <div className="flex items-center gap-1.5 mb-3">
           <Receipt className="h-4 w-4 text-brand-accent" />
           <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider">Recent Transactions</h3>

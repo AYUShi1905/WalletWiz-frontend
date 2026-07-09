@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useChat } from '../context/ChatContext';
 import { 
   Send, Trash2, Bot, User, Loader2, Landmark, 
-  CreditCard, Banknote, ShieldAlert, BadgeInfo, CheckCircle 
+  CreditCard, Banknote, ShieldAlert, BadgeInfo 
 } from 'lucide-react';
 
 const Chat = () => {
@@ -69,7 +69,7 @@ const Chat = () => {
       case 'UPI':
         return <Landmark className="h-4 w-4 text-emerald-400" />;
       case 'CARD':
-        return <CreditCard className="h-4 w-4 text-blue-400" />;
+        return <CreditCard className="h-4 w-4 text-indigo-400" />;
       case 'CASH':
       default:
         return <Banknote className="h-4 w-4 text-amber-400" />;
@@ -170,7 +170,7 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex flex-col h-[75vh] relative overflow-hidden">
+    <div className="flex flex-col h-[72vh] relative overflow-hidden">
       {/* 429 Toast Alert Banner */}
       {rateLimitMessage && (
         <div className="absolute top-2 left-2 right-2 z-50 flex items-center gap-2 p-3 bg-rose-600 text-white rounded-xl shadow-lg border border-rose-500/20 text-xs font-semibold animate-slide-down">
@@ -180,7 +180,7 @@ const Chat = () => {
       )}
 
       {/* Chat Title and Controls */}
-      <div className="flex items-center justify-between pb-2 border-b border-white/10 shrink-0 mb-3">
+      <div className="flex items-center justify-between pb-2 border-b border-white/5 shrink-0 mb-3">
         <div className="flex items-center gap-2">
           <div className="bg-brand-accent/10 p-2 rounded-xl text-brand-accent border border-brand-accent/10">
             <Bot className="h-5 w-5" />

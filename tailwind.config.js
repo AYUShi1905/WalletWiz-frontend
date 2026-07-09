@@ -8,9 +8,9 @@ export default {
     extend: {
       colors: {
         brand: {
-          dark: '#0B0F19',
-          card: 'rgba(255, 255, 255, 0.05)',
-          accent: '#3B82F6', // Vibrant Blue
+          dark: '#070A13',
+          card: 'rgba(15, 23, 42, 0.45)',
+          accent: '#6366F1', // Soft Indigo
         }
       }
     },

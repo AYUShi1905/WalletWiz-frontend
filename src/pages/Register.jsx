@@ -129,7 +129,7 @@ const Register = () => {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full flex items-center justify-center py-3 px-4 bg-gradient-to-r from-brand-accent to-blue-600 hover:to-blue-700 text-white font-medium rounded-xl shadow-lg hover:shadow-brand-accent/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center py-3 px-4 bg-gradient-to-r from-brand-accent to-violet-600 hover:to-violet-700 text-white font-medium rounded-xl shadow-lg hover:shadow-brand-accent/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {submitting ? <Loader className="animate-spin h-5 w-5 mr-2" /> : null}
               Sign Up
