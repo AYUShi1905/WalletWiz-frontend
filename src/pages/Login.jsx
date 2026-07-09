@@ -87,14 +87,14 @@ const Login = () => {
       <div className="w-full max-w-md z-10">
         {/* Brand Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-brand-accent to-cyan-400 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-brand-accent to-cyanCustom-300 bg-clip-text text-transparent">
             WalletWiz
           </h1>
-          <p className="text-slate-400 mt-2 text-sm">Welcome back! Manage your transactions with ease.</p>
+          <p className="text-slate-500 dark:text-slate-400 mt-2 text-sm">Welcome back! Manage your transactions with ease.</p>
         </div>
 
         {/* Form Card */}
-        <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-8 shadow-2xl">
+        <div className="glassy-card rounded-2xl p-8 shadow-2xl">
           {error && (
             <div className="mb-6 p-4 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-lg text-sm">
               {error}
@@ -153,7 +153,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full flex items-center justify-center py-3 px-4 bg-gradient-to-r from-brand-accent to-violet-600 hover:to-violet-700 text-white font-medium rounded-xl shadow-lg hover:shadow-brand-accent/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center py-3 px-4 bg-gradient-to-r from-brand-accent to-cyanCustom-700 hover:to-cyanCustom-800 text-white font-medium rounded-xl shadow-lg hover:shadow-brand-accent/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {submitting ? <Loader className="animate-spin h-5 w-5 mr-2" /> : null}
               Sign In

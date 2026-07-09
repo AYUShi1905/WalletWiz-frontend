@@ -3,5 +3,15 @@
 @tailwind utilities;
 
 body {
-  @apply bg-brand-dark text-slate-100 min-h-screen antialiased;
+  @apply bg-slate-50 text-slate-900 dark:bg-brand-dark dark:text-slate-100 min-h-screen antialiased;
+}
+
+/* Smooth transitions for theme swapping */
+body, header, nav, main, select, input, textarea, button, .glassy-card {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Premium Glossy Glassmorphic card theme */
+.glassy-card {
+  @apply bg-white/75 dark:bg-slate-900/35 border border-slate-200/50 dark:border-white/10 backdrop-blur-lg shadow-sm dark:shadow-lg dark:shadow-cyan-950/5;
 }

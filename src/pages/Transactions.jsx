@@ -175,12 +175,12 @@ const Transactions = () => {
   const getPaymentIcon = (method) => {
     switch (method?.toUpperCase()) {
       case 'UPI':
-        return <Landmark className="h-5 w-5 text-emerald-400" />;
+        return <Landmark className="h-5 w-5 text-emerald-500" />;
       case 'CARD':
-        return <CreditCard className="h-5 w-5 text-indigo-400" />;
+        return <CreditCard className="h-5 w-5 text-cyan-500" />;
       case 'CASH':
       default:
-        return <Banknote className="h-5 w-5 text-amber-400" />;
+        return <Banknote className="h-5 w-5 text-amber-500" />;
     }
   };
 
@@ -197,8 +197,8 @@ const Transactions = () => {
       {/* Header with Title and Filter Trigger */}
       <div className="flex items-center justify-between pb-2">
         <div>
-          <h1 className="text-xl font-extrabold text-slate-100">Transactions</h1>
-          <span className="text-[10px] text-slate-500 font-semibold tracking-wide uppercase">
+          <h1 className="text-xl font-extrabold text-slate-800 dark:text-slate-100">Transactions</h1>
+          <span className="text-[10px] text-slate-500 dark:text-slate-400 font-bold tracking-wide uppercase">
             {pagination.total_items} Logs
           </span>
         </div>
@@ -207,7 +207,7 @@ const Transactions = () => {
           className={`flex items-center gap-1.5 py-2 px-3.5 rounded-xl border text-xs font-semibold transition-all duration-300 ${
             showFilters || categoryFilter || paymentFilter || startDate || endDate
               ? 'bg-brand-accent/20 border-brand-accent text-brand-accent'
-              : 'bg-white/5 border-white/10 text-slate-300'
+              : 'bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300'
           }`}
         >
           <Filter className="h-4 w-4" />
@@ -217,9 +217,9 @@ const Transactions = () => {
 
       {/* Collapsible Filter Bar */}
       {showFilters && (
-        <div className="backdrop-blur-md bg-slate-900/90 border border-white/5 rounded-2xl p-4 space-y-4 shadow-xl animate-fade-in">
+        <div className="glassy-card rounded-2xl p-4 space-y-4 shadow-sm dark:shadow-xl animate-fade-in text-slate-800 dark:text-slate-200">
           <div className="flex items-center justify-between">
-            <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider">Filters</h3>
+            <h3 className="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Filters</h3>
             <button onClick={resetFilters} className="text-[10px] text-brand-accent font-semibold hover:underline">
               Clear All
             </button>
@@ -228,11 +228,11 @@ const Transactions = () => {
           <div className="grid grid-cols-2 gap-3">
             {/* Category Select */}
             <div>
-              <label className="block text-[10px] font-semibold text-slate-400 mb-1">Category</label>
+              <label className="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1">Category</label>
               <select
                 value={categoryFilter}
                 onChange={(e) => { setCategoryFilter(e.target.value); setCurrentPage(1); }}
-                className="w-full bg-slate-950 border border-white/5 rounded-xl px-2 py-2 text-xs text-slate-200 focus:border-brand-accent outline-none"
+                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-white/5 rounded-xl px-2 py-2 text-xs text-slate-700 dark:text-slate-200 focus:border-brand-accent outline-none"
               >
                 <option value="">All Categories</option>
                 {CATEGORIES.map((cat) => (
@@ -243,11 +243,11 @@ const Transactions = () => {
 
             {/* Payment Method Select */}
             <div>
-              <label className="block text-[10px] font-semibold text-slate-400 mb-1">Method</label>
+              <label className="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1">Method</label>
               <select
                 value={paymentFilter}
                 onChange={(e) => { setPaymentFilter(e.target.value); setCurrentPage(1); }}
-                className="w-full bg-slate-950 border border-white/5 rounded-xl px-2 py-2 text-xs text-slate-200 focus:border-brand-accent outline-none"
+                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-white/5 rounded-xl px-2 py-2 text-xs text-slate-700 dark:text-slate-200 focus:border-brand-accent outline-none"
               >
                 <option value="">All Methods</option>
                 {PAYMENT_METHODS.map((pm) => (
@@ -258,21 +258,21 @@ const Transactions = () => {
 
             {/* Date Filters */}
             <div>
-              <label className="block text-[10px] font-semibold text-slate-400 mb-1">From Date</label>
+              <label className="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1">From Date</label>
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => { setStartDate(e.target.value); setCurrentPage(1); }}
-                className="w-full bg-slate-950 border border-white/5 rounded-xl px-2 py-2 text-xs text-slate-200 focus:border-brand-accent outline-none"
+                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-white/5 rounded-xl px-2 py-2 text-xs text-slate-700 dark:text-slate-200 focus:border-brand-accent outline-none"
               />
             </div>
             <div>
-              <label className="block text-[10px] font-semibold text-slate-400 mb-1">To Date</label>
+              <label className="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1">To Date</label>
               <input
                 type="date"
                 value={endDate}
                 onChange={(e) => { setEndDate(e.target.value); setCurrentPage(1); }}
-                className="w-full bg-slate-950 border border-white/5 rounded-xl px-2 py-2 text-xs text-slate-200 focus:border-brand-accent outline-none"
+                className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-white/5 rounded-xl px-2 py-2 text-xs text-slate-700 dark:text-slate-200 focus:border-brand-accent outline-none"
               />
             </div>
           </div>
@@ -291,24 +291,24 @@ const Transactions = () => {
         </div>
       ) : transactions.length === 0 ? (
         <div className="py-20 text-center space-y-1">
-          <p className="text-slate-500 text-sm">No transaction records found.</p>
-          <p className="text-slate-600 text-xs">Tap the floating plus button to log an expense.</p>
+          <p className="text-slate-400 dark:text-slate-500 text-sm">No transaction records found.</p>
+          <p className="text-slate-500 dark:text-slate-600 text-xs">Tap the floating plus button to log an expense.</p>
         </div>
       ) : (
         <div className="space-y-3 pb-24">
           {transactions.map((tx) => (
             <div 
               key={tx.id} 
-              className="backdrop-blur-md bg-slate-900/40 border border-white/5 rounded-2xl p-4 shadow-md flex items-center justify-between gap-4 active:bg-white/10 transition-colors"
+              className="glassy-card rounded-2xl p-4 flex items-center justify-between gap-4 active:bg-slate-100 dark:active:bg-white/10 transition-colors"
             >
               {/* Left Details */}
               <div className="flex items-center gap-3 min-w-0" onClick={() => openEditModal(tx)}>
-                <div className="bg-white/5 p-2.5 rounded-xl border border-white/5 text-slate-300 shrink-0">
+                <div className="bg-slate-100 dark:bg-white/5 p-2.5 rounded-xl border border-slate-200/50 dark:border-white/5 text-slate-500 dark:text-slate-300 shrink-0">
                   {getPaymentIcon(tx.payment_method)}
                 </div>
                 <div className="min-w-0">
-                  <span className="font-bold text-slate-100 block truncate text-sm">{tx.merchant}</span>
-                  <span className="text-slate-500 text-[10px] block mt-0.5 uppercase tracking-wider font-semibold">
+                  <span className="font-bold text-slate-800 dark:text-slate-100 block truncate text-sm">{tx.merchant}</span>
+                  <span className="text-slate-500 dark:text-slate-400 text-[10px] block mt-0.5 uppercase tracking-wider font-semibold">
                     {tx.category} • {new Date(tx.transaction_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
                   </span>
                 </div>
@@ -317,14 +317,14 @@ const Transactions = () => {
               {/* Right Side Actions & Value */}
               <div className="flex items-center gap-3 shrink-0">
                 <div className="text-right">
-                  <span className="font-extrabold text-slate-100 text-sm block">-{formatCurrency(tx.amount)}</span>
-                  <span className="text-[10px] text-slate-500 font-semibold uppercase">{tx.payment_method}</span>
+                  <span className="font-extrabold text-slate-800 dark:text-slate-100 text-sm block">-{formatCurrency(tx.amount)}</span>
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase">{tx.payment_method}</span>
                 </div>
                 
                 {/* Delete button */}
                 <button
                   onClick={() => setDeleteId(tx.id)}
-                  className="p-2 rounded-lg text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
+                  className="p-2 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
                 >
                   <Trash2 className="h-4.5 w-4.5" />
                 </button>
@@ -334,11 +334,11 @@ const Transactions = () => {
 
           {/* Simple Mobile Pagination Controls */}
           {pagination.total_pages > 1 && (
-            <div className="flex items-center justify-between pt-4 border-t border-white/5 text-slate-400">
+            <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-white/5 text-slate-500 dark:text-slate-400">
               <button
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                className="flex items-center gap-1 py-2 px-4 rounded-xl bg-white/5 border border-white/10 disabled:opacity-30 disabled:pointer-events-none text-xs font-semibold"
+                className="flex items-center gap-1 py-2 px-4 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 disabled:opacity-30 disabled:pointer-events-none text-xs font-semibold"
               >
                 <ChevronLeft className="h-4 w-4" />
                 Prev
@@ -349,7 +349,7 @@ const Transactions = () => {
               <button
                 disabled={currentPage === pagination.total_pages}
                 onClick={() => setCurrentPage(prev => Math.min(prev + 1, pagination.total_pages))}
-                className="flex items-center gap-1 py-2 px-4 rounded-xl bg-white/5 border border-white/10 disabled:opacity-30 disabled:pointer-events-none text-xs font-semibold"
+                className="flex items-center gap-1 py-2 px-4 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 disabled:opacity-30 disabled:pointer-events-none text-xs font-semibold"
               >
                 Next
                 <ChevronRight className="h-4 w-4" />
@@ -362,7 +362,7 @@ const Transactions = () => {
       {/* Floating Action Button (FAB) for adding new transaction */}
       <button
         onClick={openAddModal}
-        className="fixed bottom-24 right-4 z-40 bg-gradient-to-tr from-indigo-500 to-violet-600 p-4 rounded-full text-white shadow-xl shadow-indigo-500/30 hover:scale-105 active:scale-95 transition-all duration-300 border border-indigo-500/20"
+        className="fixed bottom-24 right-4 z-40 bg-gradient-to-tr from-cyanCustom-500 to-cyanCustom-800 p-4 rounded-full text-white shadow-xl shadow-cyanCustom-500/30 hover:scale-105 active:scale-95 transition-all duration-300 border border-cyanCustom-500/20"
       >
         <Plus className="h-6 w-6" />
       </button>
@@ -374,12 +374,12 @@ const Transactions = () => {
           <div className="flex-1" onClick={closeFormModal}></div>
 
           {/* Bottom Sheet Drawer */}
-          <div className="bg-slate-950 border-t border-white/5 rounded-t-3xl p-6 shadow-2xl max-h-[85vh] overflow-y-auto animate-slide-up">
-            <div className="flex items-center justify-between pb-4 border-b border-white/5 mb-5">
-              <h2 className="text-lg font-bold text-slate-100">
+          <div className="bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-white/5 rounded-t-3xl p-6 shadow-2xl max-h-[85vh] overflow-y-auto animate-slide-up text-slate-800 dark:text-slate-100">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-white/5 mb-5">
+              <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100">
                 {editingId ? 'Edit Transaction' : 'Log Transaction'}
               </h2>
-              <button onClick={closeFormModal} className="p-1 rounded-lg text-slate-400 hover:text-slate-200">
+              <button onClick={closeFormModal} className="p-1 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -394,20 +394,20 @@ const Transactions = () => {
             <form onSubmit={handleFormSubmit} className="space-y-4 text-sm">
               {/* Merchant name */}
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Merchant</label>
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Merchant</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Starbucks, Pizza Hut"
                   value={merchant}
                   onChange={(e) => setMerchant(e.target.value)}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/5 rounded-xl focus:border-brand-accent outline-none text-slate-100"
+                  className="w-full px-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-xl focus:border-brand-accent outline-none text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
                 />
               </div>
 
               {/* Amount */}
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Amount (INR)</label>
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Amount (INR)</label>
                 <div className="relative">
                   <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
                     <DollarSign className="h-4 w-4" />
@@ -419,18 +419,18 @@ const Transactions = () => {
                     placeholder="0.00"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/5 rounded-xl focus:border-brand-accent outline-none text-slate-100"
+                    className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-xl focus:border-brand-accent outline-none text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
                   />
                 </div>
               </div>
 
               {/* Category */}
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Category</label>
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Category</label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full bg-slate-900 border border-white/5 rounded-xl px-4 py-3 text-slate-200 focus:border-brand-accent outline-none"
+                  className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-white/5 rounded-xl px-4 py-3 text-slate-800 dark:text-slate-200 focus:border-brand-accent outline-none"
                 >
                   {CATEGORIES.map((cat) => (
                     <option key={cat} value={cat}>{cat}</option>
@@ -440,11 +440,11 @@ const Transactions = () => {
 
               {/* Payment Method */}
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Payment Method</label>
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Payment Method</label>
                 <select
                   value={paymentMethod}
                   onChange={(e) => setPaymentMethod(e.target.value)}
-                  className="w-full bg-slate-900 border border-white/5 rounded-xl px-4 py-3 text-slate-200 focus:border-brand-accent outline-none"
+                  className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-white/5 rounded-xl px-4 py-3 text-slate-800 dark:text-slate-200 focus:border-brand-accent outline-none"
                 >
                   {PAYMENT_METHODS.map((pm) => (
                     <option key={pm} value={pm}>{pm}</option>
@@ -454,25 +454,25 @@ const Transactions = () => {
 
               {/* Transaction Date */}
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Date</label>
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Date</label>
                 <input
                   type="date"
                   required
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/5 rounded-xl focus:border-brand-accent outline-none text-slate-100"
+                  className="w-full px-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-xl focus:border-brand-accent outline-none text-slate-800 dark:text-slate-100"
                 />
               </div>
 
               {/* Description */}
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Description (Optional)</label>
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Description (Optional)</label>
                 <textarea
                   placeholder="Notes about this expense..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   rows={2}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/5 rounded-xl focus:border-brand-accent outline-none text-slate-100 resize-none"
+                  className="w-full px-4 py-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-xl focus:border-brand-accent outline-none text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 resize-none"
                 ></textarea>
               </div>
 
@@ -480,7 +480,7 @@ const Transactions = () => {
               <button
                 type="submit"
                 disabled={formSubmitting}
-                className="w-full py-3 bg-brand-accent hover:bg-brand-accent/90 text-white font-semibold rounded-xl transition-colors shadow-lg shadow-indigo-500/25 flex items-center justify-center gap-2"
+                className="w-full py-3 bg-brand-accent hover:bg-brand-accent/90 text-white font-semibold rounded-xl transition-colors shadow-lg shadow-cyanCustom-500/25 flex items-center justify-center gap-2"
               >
                 {formSubmitting && <Loader className="animate-spin h-4 w-4" />}
                 {editingId ? 'Save Changes' : 'Log Expense'}
@@ -494,13 +494,13 @@ const Transactions = () => {
       {deleteId && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-end">
           <div className="flex-1" onClick={() => setDeleteId(null)}></div>
-          <div className="bg-slate-950 border-t border-white/5 rounded-t-3xl p-6 shadow-2xl animate-slide-up">
-            <h3 className="text-base font-extrabold text-slate-100 mb-2">Delete Transaction?</h3>
-            <p className="text-slate-400 text-xs mb-6">Are you sure you want to delete this record? This action cannot be undone.</p>
+          <div className="bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-white/10 rounded-t-3xl p-6 shadow-2xl animate-slide-up text-slate-800 dark:text-slate-100">
+            <h3 className="text-base font-extrabold text-slate-800 dark:text-slate-100 mb-2">Delete Transaction?</h3>
+            <p className="text-slate-500 dark:text-slate-400 text-xs mb-6">Are you sure you want to delete this record? This action cannot be undone.</p>
             <div className="flex gap-3">
               <button
                 onClick={() => setDeleteId(null)}
-                className="w-1/2 py-3 bg-white/5 border border-white/5 text-slate-300 font-semibold rounded-xl text-xs"
+                className="w-1/2 py-3 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 text-slate-600 dark:text-slate-300 font-semibold rounded-xl text-xs"
               >
                 Cancel
               </button>

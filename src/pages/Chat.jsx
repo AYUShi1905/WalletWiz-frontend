@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useChat } from '../context/ChatContext';
+import { useTheme } from '../context/ThemeContext';
 import { 
   Send, Trash2, Bot, User, Loader2, Landmark, 
   CreditCard, Banknote, ShieldAlert, BadgeInfo 
@@ -10,6 +11,7 @@ const Chat = () => {
   const [inputText, setInputText] = useState('');
   const [rateLimitMessage, setRateLimitMessage] = useState('');
   const messagesEndRef = useRef(null);
+  const { theme } = useTheme();
 
   // Auto scroll to bottom
   const scrollToBottom = () => {
@@ -67,16 +69,16 @@ const Chat = () => {
   const getPaymentIcon = (method) => {
     switch (method?.toUpperCase()) {
       case 'UPI':
-        return <Landmark className="h-4 w-4 text-emerald-400" />;
+        return <Landmark className="h-4 w-4 text-emerald-500" />;
       case 'CARD':
-        return <CreditCard className="h-4 w-4 text-indigo-400" />;
+        return <CreditCard className="h-4 w-4 text-cyan-500" />;
       case 'CASH':
       default:
-        return <Banknote className="h-4 w-4 text-amber-400" />;
+        return <Banknote className="h-4 w-4 text-amber-500" />;
     }
   };
 
-  // Receipt Card Component for log_transaction tool
+  // Receipt Card Component for log_transaction tool (real paper style in both themes)
   const ReceiptCard = ({ tx }) => {
     if (!tx) return null;
     return (
@@ -134,12 +136,12 @@ const Chat = () => {
     );
   };
 
-  // Database query summary card component
+  // Database query summary card component (uses glassy-card for glossy styling)
   const QueryCard = ({ filters, count }) => {
     if (!filters) return null;
     return (
-      <div className="mt-3 backdrop-blur-md bg-slate-950/60 border border-slate-800 rounded-xl p-4 shadow-lg text-xs w-full max-w-[260px]">
-        <div className="flex items-center gap-1.5 text-brand-accent font-bold border-b border-white/5 pb-2 mb-3">
+      <div className="glassy-card mt-3 rounded-xl p-4 text-xs w-full max-w-[260px] text-slate-800 dark:text-slate-200">
+        <div className="flex items-center gap-1.5 text-brand-accent font-bold border-b border-slate-200 dark:border-white/5 pb-2 mb-3">
           <BadgeInfo className="h-4 w-4" />
           <span>QUERY FILTERS</span>
         </div>
@@ -149,9 +151,9 @@ const Chat = () => {
           {Object.entries(filters).map(([key, value]) => {
             if (value === null || value === undefined || value === '') return null;
             return (
-              <div key={key} className="flex items-center justify-between bg-white/5 px-2 py-1 rounded-lg border border-white/5 min-w-0">
-                <span className="text-[9px] text-slate-500 font-semibold uppercase">{key.replace('_', ' ')}</span>
-                <span className="text-slate-300 font-bold truncate max-w-[120px] ml-2">
+              <div key={key} className="flex items-center justify-between bg-slate-100 dark:bg-white/5 px-2 py-1 rounded-lg border border-slate-200/50 dark:border-white/5 min-w-0">
+                <span className="text-[9px] text-slate-500 dark:text-slate-400 font-semibold uppercase">{key.replace('_', ' ')}</span>
+                <span className="text-slate-800 dark:text-slate-300 font-bold truncate max-w-[120px] ml-2">
                   {typeof value === 'number' ? formatCurrency(value) : value.toString()}
                 </span>
               </div>
@@ -159,7 +161,7 @@ const Chat = () => {
           })}
         </div>
 
-        <div className="flex items-center justify-between bg-brand-accent/15 border border-brand-accent/20 text-brand-accent py-2 px-3 rounded-lg font-bold">
+        <div className="flex items-center justify-between bg-brand-accent/10 dark:bg-brand-accent/15 border border-brand-accent/20 text-brand-accent py-2 px-3 rounded-lg font-bold">
           <span>MATCHES:</span>
           <span className="bg-brand-accent text-white px-2 py-0.5 rounded-full text-[9px] shadow-sm">
             {count || 0}
@@ -180,14 +182,14 @@ const Chat = () => {
       )}
 
       {/* Chat Title and Controls */}
-      <div className="flex items-center justify-between pb-2 border-b border-white/5 shrink-0 mb-3">
+      <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-white/5 shrink-0 mb-3">
         <div className="flex items-center gap-2">
           <div className="bg-brand-accent/10 p-2 rounded-xl text-brand-accent border border-brand-accent/10">
             <Bot className="h-5 w-5" />
           </div>
           <div>
-            <h1 className="text-base font-extrabold text-slate-100">AI Assistant</h1>
-            <p className="text-[10px] text-slate-500 font-semibold">Conversational database helper</p>
+            <h1 className="text-base font-extrabold text-slate-800 dark:text-slate-100">AI Assistant</h1>
+            <p className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold">Conversational database helper</p>
           </div>
         </div>
         
@@ -195,7 +197,7 @@ const Chat = () => {
         {history.length > 0 && (
           <button
             onClick={clearHistory}
-            className="flex items-center gap-1 text-[10px] text-slate-400 hover:text-rose-400 font-semibold px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors border border-white/5"
+            className="flex items-center gap-1 text-[10px] text-slate-500 dark:text-slate-400 hover:text-rose-500 dark:hover:text-rose-400 font-semibold px-2 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors border border-slate-200 dark:border-white/5"
           >
             <Trash2 className="h-3.5 w-3.5" />
             Clear
@@ -210,9 +212,9 @@ const Chat = () => {
             <div className="bg-brand-accent/10 p-4.5 rounded-full text-brand-accent border border-brand-accent/10 shadow-inner">
               <Bot className="h-9 w-9 animate-bounce" />
             </div>
-            <div className="max-w-xs space-y-3">
-              <h3 className="text-sm font-extrabold text-slate-200">Meet your AI Assistant</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
+            <div className="max-w-xs space-y-3 text-slate-800 dark:text-slate-100">
+              <h3 className="text-sm font-extrabold">Meet your AI Assistant</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                 Log transactions or query details using natural statements. Try tapping one:
               </p>
               <div className="flex flex-col gap-2">
@@ -224,7 +226,7 @@ const Chat = () => {
                   <button 
                     key={i}
                     onClick={() => setInputText(prompt)}
-                    className="p-2.5 bg-white/5 border border-white/5 hover:border-brand-accent/30 rounded-xl text-[10px] text-slate-400 hover:text-slate-200 transition-all duration-300 text-left font-medium italic"
+                    className="glassy-card p-2.5 rounded-xl text-[10px] text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-all duration-300 text-left font-medium shadow-sm dark:shadow-none italic"
                   >
                     "{prompt}"
                   </button>
@@ -244,8 +246,8 @@ const Chat = () => {
                   {/* Bubble Avatar */}
                   <div className={`p-2 rounded-xl border shrink-0 h-8 w-8 flex items-center justify-center ${
                     isAssistant 
-                      ? 'bg-slate-900/60 border-white/5 text-brand-accent' 
-                      : 'bg-brand-accent/15 border-brand-accent/10 text-white'
+                      ? 'bg-slate-100 border-slate-200 text-brand-accent dark:bg-slate-900/60 dark:border-white/5' 
+                      : 'bg-brand-accent/10 border-brand-accent/10 dark:bg-brand-accent/15 dark:border-brand-accent/10 text-brand-accent'
                   }`}>
                     {isAssistant ? <Bot className="h-4.5 w-4.5" /> : <User className="h-4.5 w-4.5" />}
                   </div>
@@ -254,7 +256,7 @@ const Chat = () => {
                   <div className="space-y-1">
                     <div className={`rounded-2xl py-2.5 px-3.5 text-xs leading-relaxed shadow-sm border ${
                       isAssistant 
-                        ? 'bg-slate-950/20 text-slate-200 border-white/5 rounded-tl-none' 
+                        ? 'bg-slate-100 text-slate-800 border-slate-200 dark:bg-slate-950/20 dark:text-slate-200 dark:border-white/5 rounded-tl-none' 
                         : 'bg-brand-accent text-white border-brand-accent/25 rounded-tr-none'
                     }`}>
                       <p className="whitespace-pre-wrap">{msg.content}</p>
@@ -286,12 +288,12 @@ const Chat = () => {
         {/* Typing Loader animation bubble */}
         {loading && (
           <div className="flex gap-2 max-w-[85%] self-start">
-            <div className="bg-slate-900/60 border border-white/5 text-brand-accent p-2 rounded-xl shrink-0 h-8 w-8 flex items-center justify-center">
+            <div className="bg-slate-100 border-slate-200 text-brand-accent p-2 rounded-xl shrink-0 h-8 w-8 flex items-center justify-center dark:bg-slate-900/60 dark:border-white/5">
               <Bot className="h-4.5 w-4.5" />
             </div>
-            <div className="bg-slate-950/20 border border-white/5 rounded-2xl rounded-tl-none py-2.5 px-3.5 shadow-sm flex items-center gap-1.5">
+            <div className="bg-slate-100 border border-slate-200 rounded-2xl rounded-tl-none py-2.5 px-3.5 shadow-sm flex items-center gap-1.5 dark:bg-slate-950/20 dark:border-white/5">
               <Loader2 className="animate-spin h-3.5 w-3.5 text-brand-accent" />
-              <span className="text-[9px] text-slate-500 font-semibold tracking-wider uppercase">Loading...</span>
+              <span className="text-[9px] text-slate-500 dark:text-slate-400 font-semibold tracking-wider uppercase">Loading...</span>
             </div>
           </div>
         )}
@@ -299,7 +301,7 @@ const Chat = () => {
       </div>
 
       {/* Input container footer */}
-      <form onSubmit={handleSend} className="pt-3 border-t border-white/10 shrink-0 bg-brand-dark">
+      <form onSubmit={handleSend} className="pt-3 border-t border-slate-200 dark:border-white/10 shrink-0 bg-slate-50 dark:bg-brand-dark">
         <div className="relative">
           <input
             type="text"
@@ -308,7 +310,7 @@ const Chat = () => {
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             placeholder="Log details or query history..."
-            className="w-full pl-3 pr-10 py-2.5 bg-white/5 border border-white/10 rounded-xl focus:border-brand-accent outline-none text-xs text-slate-100 placeholder-slate-500 disabled:opacity-50"
+            className="w-full pl-3 pr-10 py-2.5 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl focus:border-brand-accent outline-none text-xs text-slate-850 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 shadow-sm dark:shadow-none"
           />
           <button
             type="submit"
