@@ -81,13 +81,13 @@ const Login = () => {
   return (
     <div className="relative flex items-center justify-center min-h-screen bg-brand-dark px-4 overflow-hidden">
       {/* Background visual gradients */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-brand-accent/20 rounded-full blur-[100px] pointer-events-none"></div>
-      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-96 h-96 bg-cyan-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-brand-accent/5 rounded-full blur-[100px] pointer-events-none"></div>
+      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-96 h-96 bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none"></div>
 
       <div className="w-full max-w-md z-10">
         {/* Brand Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-brand-accent to-cyanCustom-300 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-brand-accent to-indigoCustom-300 bg-clip-text text-transparent">
             WalletWiz
           </h1>
           <p className="text-slate-500 dark:text-slate-400 mt-2 text-sm">Welcome back! Manage your transactions with ease.</p>
@@ -153,7 +153,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full flex items-center justify-center py-3 px-4 bg-gradient-to-r from-brand-accent to-cyanCustom-700 hover:to-cyanCustom-800 text-white font-medium rounded-xl shadow-lg hover:shadow-brand-accent/20 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center py-3 px-4 bg-gradient-to-r from-brand-accent to-indigoCustom-700 hover:to-indigoCustom-800 text-white font-medium rounded-xl shadow-lg hover:shadow-indigoCustom-500/25 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {submitting ? <Loader className="animate-spin h-5 w-5 mr-2" /> : null}
               Sign In

@@ -8,10 +8,10 @@ body {
 
 /* Smooth transitions for theme swapping */
 body, header, nav, main, select, input, textarea, button, .glassy-card {
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Premium Glossy Glassmorphic card theme */
+/* Premium Card (Clean, high-contrast, structured slate/zinc border style) */
 .glassy-card {
-  @apply bg-white/75 dark:bg-slate-900/35 border border-slate-200/50 dark:border-white/10 backdrop-blur-lg shadow-sm dark:shadow-lg dark:shadow-cyan-950/5;
+  @apply bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800/80 shadow-sm dark:shadow-md;
 }

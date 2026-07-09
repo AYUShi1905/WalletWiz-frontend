@@ -7,31 +7,33 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+      },
       colors: {
         brand: {
-          dark: '#070A13',
-          card: 'rgba(15, 23, 42, 0.45)',
-          accent: '#00BCD4', // Cyan 500
+          dark: '#09090B',
+          card: 'rgba(24, 24, 27, 0.45)',
+          accent: '#3F51B5', // Indigo 500
         },
-        cyanCustom: {
-          50: '#E0F7FA',
-          100: '#B2EBF2',
-          200: '#80DEEA',
-          300: '#4DD0E1',
-          400: '#26C6DA',
-          500: '#00BCD4',
-          600: '#00ACC1',
-          700: '#0097A7',
-          800: '#00838F',
-          900: '#006064',
-          A100: '#84FFFF',
-          A200: '#18FFFF',
-          A400: '#00E5FF',
-          A700: '#00B8D4',
+        indigoCustom: {
+          50: '#E8EAF6',
+          100: '#C5CAE9',
+          200: '#9FA8DA',
+          300: '#7986CB',
+          400: '#5C6BC0',
+          500: '#3F51B5',
+          600: '#3949AB',
+          700: '#303F9F',
+          800: '#283593',
+          900: '#1A237E',
+          A100: '#8C9EFF',
+          A200: '#536DFE',
+          A400: '#3D5AFE',
+          A700: '#304FFE',
         }
       }
     },
   },
   plugins: [],
 }
-
