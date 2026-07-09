@@ -7,7 +7,7 @@ This document outlines the requirements, tech stack, page-by-page specs, and int
 ## 🛠️ 1. Frontend Tech Stack
 
 * **Core Framework**: React (with Vite for fast bundling and development)
-* **Language**: TypeScript (for type safety and compile-time error checking)
+* **Language**: JavaScript (JSX)
 * **Styling**: Tailwind CSS v3 (utility-first CSS for responsive, custom layouts)
 * **Routing**: React Router DOM v6
 * **State Management**:
@@ -32,11 +32,11 @@ src/
 ├── context/            # React Contexts (AuthContext, ChatContext)
 ├── hooks/              # Custom hooks (useAuth, useTransactions)
 ├── pages/              # Main page views (Login, Register, Dashboard, Transactions, Chat)
-├── services/           # API clients and network helpers (api.ts, authService.ts)
+├── services/           # API clients and network helpers (api.js, authService.js)
 ├── utils/              # Helper functions (formatters, dates)
-├── App.tsx             # Main routing and provider setup
+├── App.jsx             # Main routing and provider setup
 ├── index.css           # Tailwind directives and global styles
-└── main.tsx            # App mounting entrypoint
+└── main.jsx            # App mounting entrypoint
 ```
 
 ---

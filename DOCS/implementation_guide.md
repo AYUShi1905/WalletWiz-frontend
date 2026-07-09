@@ -7,10 +7,10 @@ This guide details the sequential steps required to build and integrate the Wall
 ## 🏁 Phase 1: Project Scaffolding & Configuration
 
 ### Step 1.1: Initialize React Project
-Create the project base directory structure using Vite with TypeScript.
+Create the project base directory structure using Vite with JavaScript.
 * Command to initialize:
   ```bash
-  npm create vite@latest . -- --template react-ts
+  npx -y create-vite@latest ./ --template react --no-interactive
   ```
 
 ### Step 1.2: Install Core Dependencies
@@ -72,25 +72,25 @@ mkdir -p src/{components/{ui,Dashboard,Transactions,Chat},context,hooks,pages,se
 ## 🔑 Phase 2: Core Integration & Authentication Flow
 
 ### Step 2.1: Configure Axios Interceptors
-Create `src/services/api.ts` to configure Axios to send the bearer token and catch global token expiration errors (401).
+Create `src/services/api.js` to configure Axios to send the bearer token and catch global token expiration errors (401).
 * Add code to read token from `localStorage` and set the request headers.
 * Set base URL: `http://localhost:8000/api/v1`
 
 ### Step 2.2: Setup Authentication Context
-Create `src/context/AuthContext.tsx` to handle:
+Create `src/context/AuthContext.jsx` to handle:
 * App-wide authentication status.
 * Methods for `login`, `register`, and `logout`.
 * Automatic loading of token on app initialization to restore sessions.
 
 ### Step 2.3: Build Registration & Login Pages
-1. Implement the forms under `src/pages/Login.tsx` and `src/pages/Register.tsx`.
+1. Implement the forms under `src/pages/Login.jsx` and `src/pages/Register.jsx`.
 2. Connect input triggers to the corresponding API calls (`/auth/login`, `/auth/register`).
 3. Add a Google Login callback handler pointing to `/auth/google`.
 4. Provide immediate validation error handling (incorrect passwords, used emails).
 
 ### Step 2.4: Set Up Routing & Guards
-1. Implement `src/components/ProtectedRoute.tsx` to wrap components and redirect unauthenticated requests to `/login`.
-2. Define routes in `src/App.tsx` (Dashboard, Transactions, Chat as protected, Login/Register as public).
+1. Implement `src/components/ProtectedRoute.jsx` to wrap components and redirect unauthenticated requests to `/login`.
+2. Define routes in `src/App.jsx` (Dashboard, Transactions, Chat as protected, Login/Register as public).
 
 ---
 
@@ -119,7 +119,7 @@ Map API data structures to Recharts elements:
 ## 💸 Phase 4: Transactions CRUD Interface
 
 ### Step 4.1: List Transactions & Filter Panels
-* Create `src/pages/Transactions.tsx`.
+* Create `src/pages/Transactions.jsx`.
 * Request data using `GET /transactions` with query filters (`page`, `limit`, `start_date`, `end_date`, `category`, `payment_method`).
 * Render results in a styled responsive table or custom layout list.
 
@@ -128,7 +128,7 @@ Map API data structures to Recharts elements:
 * Construct Next/Prev buttons. Disable options if the user is on the boundary pages.
 
 ### Step 4.3: Manual Entry & Update Forms
-* Create `src/components/Transactions/TransactionModal.tsx`.
+* Create `src/components/Transactions/TransactionModal.jsx`.
 * Use input validation to ensure values (e.g. `amount`) are numbers.
 * Standardize selections for `category` and `payment_method` using HTML select drop-downs loaded with the required enums.
 
@@ -137,8 +137,8 @@ Map API data structures to Recharts elements:
 ## 🤖 Phase 5: AI Assistant Chat & Interceptor Controls
 
 ### Step 5.1: Chat Context & Window Design
-1. Create `src/context/ChatContext.tsx` to manage array memory `history: { role: string; content: string }[]`.
-2. Design `src/components/Chat/ChatWidget.tsx` (scrollable container that auto-scrolls to the bottom on new messages).
+1. Create `src/context/ChatContext.jsx` to manage array memory `history` (array of message objects).
+2. Design `src/components/Chat/ChatWidget.jsx` (scrollable container that auto-scrolls to the bottom on new messages).
 
 ### Step 5.2: Dispatch Query Messages
 * Implement `POST /api/v1/chat` request, sending user input alongside current message history.
