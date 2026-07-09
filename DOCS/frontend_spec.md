@@ -1,6 +1,6 @@
-# WalletWiz - Frontend Specification Document
+# WalletWiz - Frontend Specification Document (Mobile-First)
 
-This document outlines the requirements, tech stack, page-by-page specs, and integration details for the WalletWiz frontend. The application will connect directly to the existing WalletWiz FastAPI + MongoDB backend.
+This document outlines the requirements, tech stack, page-by-page specs, and integration details for the WalletWiz frontend. The application connects to the WalletWiz FastAPI + MongoDB backend and is strictly optimized for mobile viewports (mobile-first design).
 
 ---
 
@@ -8,7 +8,7 @@ This document outlines the requirements, tech stack, page-by-page specs, and int
 
 * **Core Framework**: React (with Vite for fast bundling and development)
 * **Language**: JavaScript (JSX)
-* **Styling**: Tailwind CSS v3 (utility-first CSS for responsive, custom layouts)
+* **Styling**: Tailwind CSS v3 (utility-first CSS optimized for mobile viewports)
 * **Routing**: React Router DOM v6
 * **State Management**:
   * **Auth & Session State**: React Context API
@@ -27,7 +27,7 @@ src/
 ├── components/         # Reusable UI components
 │   ├── ui/             # Atomic design elements (Buttons, Input, Card, Modal, Toast)
 │   ├── Dashboard/      # Chart containers and metric cards
-│   ├── Transactions/   # Filters, table, and manual entry forms
+│   ├── Transactions/   # Filters, card list, and manual entry forms
 │   └── Chat/           # Chat window, message bubbles, and tool trigger renderers
 ├── context/            # React Contexts (AuthContext, ChatContext)
 ├── hooks/              # Custom hooks (useAuth, useTransactions)
@@ -49,7 +49,7 @@ WalletWiz uses JWT Bearer Tokens for authentication as specified in the backend 
 1. **Login/Register**: User submits credentials to `/api/v1/auth/login` or `/api/v1/auth/register`.
 2. **Google OAuth**: User signs in via Google, returning an `id_token` sent to `/api/v1/auth/google`.
 3. **Session Persistence**: On success, the API returns an `access_token`. The frontend stores this token in `localStorage` or `sessionStorage`.
-4. **Header Injection**: All subsequent requests to protected endpoints must include the token:
+4. **Header Injection**: All requests to protected endpoints include the token:
    ```http
    Authorization: Bearer <your_jwt_access_token>
    ```
@@ -60,7 +60,7 @@ WalletWiz uses JWT Bearer Tokens for authentication as specified in the backend 
 ## 📊 4. Page-by-Page Requirements
 
 ### 4.1 Authentication Pages (Login / Signup)
-* **Design**: Premium split-screen layout. Left side: interactive graphic or logo with visual intro. Right side: clean, modern forms.
+* **Design**: Premium glassmorphic cards centered on a dark theme background, optimized for mobile screens.
 * **Fields**:
   * **Login**: Email, Password.
   * **Register**: First Name, Email, Password.
@@ -69,34 +69,36 @@ WalletWiz uses JWT Bearer Tokens for authentication as specified in the backend 
   * Form validation (email formats, password strength).
   * Informative error messages (e.g., "User with this email already registered").
 
-### 4.2 Dashboard & Analytics View
-* **Timeframe Selector**: Buttons/Dropdown to filter dashboard statistics by timeframe: `"this-month"`, `"last-30-days"`, or `"this-year"`.
+### 4.2 Dashboard & Analytics View (Mobile-First Feed)
+* **Timeframe Selector**: Pill-style segmented control at the top of the view (`"this-month"`, `"last-30-days"`, `"this-year"`).
 * **Metric Cards**:
   * **Total Spent**: Displays standard currency formatting (e.g., `$12,450.00`).
   * **Daily Average**: Computes and highlights average daily spend.
-* **Charts (Recharts)**:
-  * **Spending by Category**: Pie/Donut chart illustrating percentage and amount per category.
-  * **Spending by Payment Method**: Bar chart dividing expenses between `UPI`, `Card`, and `Cash`.
-  * **Daily Trend**: Area/Line chart demonstrating spending fluctuations over time.
-* **Recent Transactions List**: A list displaying the last 5-10 transactions with direct click-through to view/edit details.
+* **Charts Layout (Single Column Vertical Flow)**:
+  * All charts stack vertically to fit phone screens (height limited to 240px - 260px).
+  * **Daily Trend**: Area/Line chart demonstrating spending fluctuations.
+  * **Spending by Category**: Donut chart illustrating percentage and amount per category.
+  * **By Payment Method**: Bar chart dividing expenses between `UPI`, `Card`, and `Cash`.
+  * **Recent Transactions List**: Stacked cards at the bottom of the feed showing recent logs.
 
 ### 💸 4.3 Transaction Manager (CRUD)
-* **Filters Panel**: Dropdowns for Category, Payment Method, and Date Pickers (Start Date, End Date).
-* **Pagination Controls**: Previous/Next page selectors showing total items and pages based on the pagination payload returned by the API.
-* **Manual Add/Edit Modal**:
-  * Fields: Amount, Merchant, Category (Dropdown), Payment Method (Dropdown), Date, Description.
+* **Mobile Card Feed**: List of vertical transaction cards. Each card shows details: date, merchant, category, payment method, amount, and quick action icons.
+* **Collapsible Filter Bar**: Simple toggle "Filters" button that opens an expanding drawer for Category, Method, and Date controls.
+* **Pagination Controls**: Large Next/Prev paging buttons at the bottom.
+* **Bottom Sheet Modals**:
+  * All creation, editing, and deletion confirmation dialogs must be rendered as bottom-sheet drawers sliding up from the bottom of the screen (`fixed bottom-0 left-0 right-0 max-h-[85vh]`).
+  * Modal Fields: Amount, Merchant, Category (Dropdown), Payment Method (Dropdown), Date, Description.
   * Enforce strict backend enums:
     * **Categories**: `Food & Dining`, `Shopping`, `Travel & Transport`, `Bills & Utilities`, `Entertainment`, `Health & Medical`, `Others`
     * **Payment Methods**: `Cash`, `Card`, `UPI`
-* **Delete Action**: Standard confirmation prompt prior to dispatching `DELETE /api/v1/transactions/{id}`.
 
 ### 🤖 4.4 AI Chat Assistant Panel
-* **UI**: Floating chat widget on the bottom right or a dedicated full-screen Chat View. Responsive scrollable body.
-* **History State**: Maintain an array of past messages (`role: "user" | "assistant"`, `content: string`) in React state and send the array with each new `/api/v1/chat` request to preserve LLM context.
+* **UI**: Full viewport mobile chat pane with sticky bottom input right above the bottom tab navigation.
+* **History State**: Maintain an array of past messages (`role: "user" | "assistant"`, `content: string`) in React state and send it with each new `/api/v1/chat` request to preserve LLM context.
 * **Dynamic Tool Renderers**:
   When a `/chat` response contains `tool_triggered` metadata, render specialized UI blocks:
   * **`query_database`**: Render a styled summary box listing the query filters applied and the number of matches found.
-  * **`log_transaction`**: Render a receipt-style card summarizing the logged transaction parameters (Merchant, Amount, Date) with an "Edit" shortcut.
+  * **`log_transaction`**: Render a physical receipt-style card summarizing the logged transaction parameters (Merchant, Amount, Date).
 * **⚠️ Rate Limit Handling**:
   If a `/chat` request returns a `429 Too Many Requests` status, catch it via the Axios interceptor and display a custom, prominent toast warning (e.g., *"Slow down! You are sending too many messages."*).
 
@@ -110,4 +112,4 @@ WalletWiz uses JWT Bearer Tokens for authentication as specified in the backend 
   * Card elements: Glassmorphic borders (`backdrop-blur-md bg-white/5 border border-white/10`).
 * **Animations**: Subtle transitions for hover states (e.g., button scaling, color transitions), list entry animations, and chart loading effects.
 * **Typography**: Outfit or Inter font families with clear size hierarchies.
-* **Responsiveness**: Flex/Grid layouts adapting seamlessly from mobile screens (single-column) to large desktop monitors.
+* **Mobile Layout Optimization**: Header and bottom tab bar are fixed. Main content container has padding offsets (`pt-16 pb-16`) to fit mobile layouts. Slide-up bottom sheet drawers for modals.

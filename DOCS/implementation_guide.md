@@ -1,6 +1,6 @@
-# WalletWiz - Frontend Step-by-Step Implementation Guide
+# WalletWiz - Frontend Step-by-Step Implementation Guide (Mobile-First)
 
-This guide details the sequential steps required to build and integrate the WalletWiz frontend with the local FastAPI backend.
+This guide details the sequential steps required to build and integrate the WalletWiz frontend with the local FastAPI backend, optimized for mobile viewports.
 
 ---
 
@@ -28,7 +28,7 @@ npm install react-router-dom axios recharts lucide-react
    ```bash
    npx tailwindcss init -p
    ```
-3. Update `tailwind.config.js` to template paths:
+3. Update `tailwind.config.js` to template paths and define custom brand colors (Vibrant Blue accent):
    ```javascript
    /** @type {import('tailwindcss').Config} */
    export default {
@@ -89,8 +89,8 @@ Create `src/context/AuthContext.jsx` to handle:
 4. Provide immediate validation error handling (incorrect passwords, used emails).
 
 ### Step 2.4: Set Up Routing & Guards
-1. Implement `src/components/ProtectedRoute.jsx` to wrap components and redirect unauthenticated requests to `/login`.
-2. Define routes in `src/App.jsx` (Dashboard, Transactions, Chat as protected, Login/Register as public).
+1. Implement `src/components/ProtectedRoute.tsx` to wrap components and redirect unauthenticated requests to `/login`.
+2. Define routes in `src/App.jsx` (Dashboard, Transactions, Chat as protected, Login/Register as public) and configure the mobile top header and bottom nav bar layout shell.
 
 ---
 
@@ -98,38 +98,38 @@ Create `src/context/AuthContext.jsx` to handle:
 
 ### Step 3.1: Create Shell Layout
 Create a standard navigation layout containing:
-* Sidebar: Links to Dashboard, Transactions, and Chat.
-* Top Bar: Logo, current page title, and Logout button.
+* Fixed Top Header: Logo, user profile name, and quick logout button.
+* Fixed Bottom Navigation Bar: Icons for Dashboard, Transactions, and AI Chat.
+* Main Content Container: Padding offsets (`pt-16 pb-16`) to fit inside mobile navigation.
 
 ### Step 3.2: Analytics Timeframe Filter State
 Set up a standard query filter state variable (`timeframe`) at the Dashboard page level, defaulting to `"this-month"`. Connect it to query calls to `/analytics/dashboard?timeframe=...`.
 
 ### Step 3.3: Implement Metric Dashboard Cards
-* Integrate API responses for `total_spent` and `daily_average` into premium glassmorphic display cards.
-* Style with gradients and clean typography.
+* Integrate API responses for `total_spent` and `daily_average` into premium glassmorphic display cards arranged in a stacked single-column flow.
 
 ### Step 3.4: Integrate Charts with Recharts
 Map API data structures to Recharts elements:
-* **Category Share**: `by_category` maps to `<PieChart>` using custom colors for each slice.
+* **Category Share**: `by_category` maps to `<PieChart>` (Donut style) with custom colors.
 * **Payment breakdown**: `by_payment_method` maps to `<BarChart>`.
-* **Daily Trend**: `daily_trend` maps to `<AreaChart>` or `<LineChart>` with custom gradient fills.
+* **Daily Trend**: `daily_trend` maps to `<AreaChart>` with custom gradient fills, stacked vertically.
 
 ---
 
 ## 💸 Phase 4: Transactions CRUD Interface
 
-### Step 4.1: List Transactions & Filter Panels
+### Step 4.1: List Transactions & Mobile Card Feed
 * Create `src/pages/Transactions.jsx`.
-* Request data using `GET /transactions` with query filters (`page`, `limit`, `start_date`, `end_date`, `category`, `payment_method`).
-* Render results in a styled responsive table or custom layout list.
+* Render results in a vertical list feed of compact cards showing merchant, category, date, and amount.
+* Implement a collapsible top filters drawer above the list.
 
 ### Step 4.2: Build Pagination Controls
 * Read current pagination metadata (`page`, `limit`, `total_pages`).
-* Construct Next/Prev buttons. Disable options if the user is on the boundary pages.
+* Construct large Prev/Next buttons.
 
-### Step 4.3: Manual Entry & Update Forms
-* Create `src/components/Transactions/TransactionModal.jsx`.
-* Use input validation to ensure values (e.g. `amount`) are numbers.
+### Step 4.3: Manual Entry & Slide-up bottom sheets
+* Create `src/components/Transactions/TransactionModal.jsx` (or inline drawer).
+* Build slide-up bottom sheet drawers for logging/editing transactions.
 * Standardize selections for `category` and `payment_method` using HTML select drop-downs loaded with the required enums.
 
 ---
@@ -138,7 +138,7 @@ Map API data structures to Recharts elements:
 
 ### Step 5.1: Chat Context & Window Design
 1. Create `src/context/ChatContext.jsx` to manage array memory `history` (array of message objects).
-2. Design `src/components/Chat/ChatWidget.jsx` (scrollable container that auto-scrolls to the bottom on new messages).
+2. Design `src/pages/Chat.jsx` (mobile chat feed container with sticky bottom input bar).
 
 ### Step 5.2: Dispatch Query Messages
 * Implement `POST /api/v1/chat` request, sending user input alongside current message history.
@@ -146,7 +146,7 @@ Map API data structures to Recharts elements:
 
 ### Step 5.3: Build Special Tool Result Renderers
 Read `tool_triggered` response values:
-* If value is `"log_transaction"`, dynamically render a stylized confirmation box showing details of the newly inserted item.
+* If value is `"log_transaction"`, dynamically render a printed receipt-style block showing details of the newly inserted item.
 * If value is `"query_database"`, show a card summarizing the filter counts and matches.
 
 ### Step 5.4: Intercept 429 Rate Limits
@@ -158,9 +158,9 @@ Add response interceptors to your Axios module:
 
 ## 🎨 Phase 6: Styling Polishing & End-to-End Verification
 
-### Step 6.1: Polish Dark Theme & Animations
+### Step 6.1: Polish Mobile Theme & Animations
 * Apply CSS transitions to buttons and cards.
-* Ensure layout grid adapts elegantly to mobile screens.
+* Ensure layout grid is optimized for mobile viewports.
 
 ### Step 6.2: Complete End-to-End Run
 * Spin up the local FastAPI backend.
