@@ -128,7 +128,7 @@ const Chat = () => {
               ></div>
             ))}
           </div>
-          <span className="text-[7px] text-slate-400 tracking-widest mt-1">*{tx.id?.substring(0, 8).toUpperCase()}*</span>
+          <span className="text-[7px] text-slate-400 tracking-widest mt-1">*{tx.id ? tx.id.substring(0, 8).toUpperCase() : 'LOGGED'}*</span>
         </div>
       </div>
     );
@@ -261,8 +261,8 @@ const Chat = () => {
                     </div>
 
                     {/* Rendering dynamic tool result card templates */}
-                    {isAssistant && msg.tool_triggered === 'log_transaction' && msg.metadata?.transaction && (
-                      <ReceiptCard tx={msg.metadata.transaction} />
+                    {isAssistant && msg.tool_triggered === 'log_transaction' && (msg.metadata?.transaction || msg.metadata?.query_filters) && (
+                      <ReceiptCard tx={msg.metadata.transaction || msg.metadata.query_filters} />
                     )}
 
                     {isAssistant && msg.tool_triggered === 'query_database' && msg.metadata?.query_filters && (
