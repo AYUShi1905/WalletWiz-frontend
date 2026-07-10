@@ -28,17 +28,24 @@ export const AuthProvider = ({ children }) => {
 
   // Initialize and load session from localStorage
   useEffect(() => {
-    const storedToken = localStorage.getItem('walletwiz_token');
-    if (storedToken) {
-      const decoded = decodeToken(storedToken);
-      if (decoded) {
+    const initializeAuth = async () => {
+      const storedToken = localStorage.getItem('walletwiz_token');
+      if (storedToken) {
         setToken(storedToken);
-        setUser(decoded);
-      } else {
-        localStorage.removeItem('walletwiz_token');
+        try {
+          const response = await api.get('/auth/me');
+          setUser(response.data);
+        } catch (error) {
+          console.error('Failed to fetch user profile:', error);
+          localStorage.removeItem('walletwiz_token');
+          setToken(null);
+          setUser(null);
+        }
       }
-    }
-    setLoading(false);
+      setLoading(false);
+    };
+
+    initializeAuth();
 
     // Listen for global auth expiration event from api interceptor
     const handleAuthExpired = () => {
@@ -72,10 +79,12 @@ export const AuthProvider = ({ children }) => {
       const { access_token } = response.data;
       
       localStorage.setItem('walletwiz_token', access_token);
-      const decoded = decodeToken(access_token);
-      
       setToken(access_token);
-      setUser(decoded || { email });
+      
+      // Fetch user profile details
+      const profileResponse = await api.get('/auth/me');
+      setUser(profileResponse.data);
+      
       return response.data;
     } catch (error) {
       throw error.response?.data || error;
@@ -89,10 +98,12 @@ export const AuthProvider = ({ children }) => {
       const { access_token } = response.data;
       
       localStorage.setItem('walletwiz_token', access_token);
-      const decoded = decodeToken(access_token);
-      
       setToken(access_token);
-      setUser(decoded || { email: decoded?.email });
+      
+      // Fetch user profile details
+      const profileResponse = await api.get('/auth/me');
+      setUser(profileResponse.data);
+      
       return response.data;
     } catch (error) {
       throw error.response?.data || error;
