@@ -174,7 +174,7 @@ const Transactions = () => {
 
 
   return (
-    <div className="relative min-h-[75vh] space-y-4">
+    <div className="relative min-h-0 space-y-4">
       {/* Success Toast Banner */}
       {successMsg && (
         <div className="fixed top-20 left-4 right-4 z-50 flex items-center gap-2 p-3 bg-emerald-500 text-white rounded-xl shadow-lg border border-emerald-400/20 text-xs font-semibold animate-slide-down">
@@ -186,7 +186,7 @@ const Transactions = () => {
       {/* Header with Title and Filter Trigger */}
       <div className="flex items-center justify-between pb-2">
         <div>
-          <h1 className="text-xl font-extrabold text-slate-800 dark:text-slate-100">Transactions</h1>
+          <h1 className="text-lg font-bold text-slate-800 dark:text-slate-100">Transactions</h1>
           <span className="text-[10px] text-slate-500 dark:text-slate-400 font-bold tracking-wide uppercase">
             {pagination.total_items} Logs
           </span>

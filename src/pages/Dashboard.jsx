@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import api from '../services/api';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, PieChart, Pie, Cell, BarChart, Bar, LabelList } from 'recharts';
-import { TrendingUp, DollarSign, Calendar, Landmark, CreditCard, Banknote, Receipt, AlertCircle, Loader, PieChart as PieIcon } from 'lucide-react';
+import { TrendingUp, DollarSign, Calendar, Landmark, CreditCard, Banknote, Receipt, AlertCircle, Loader, PieChart as PieIcon, ChevronDown } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 // Curated Indigo Shades (Indigo 500, A200, 800, 300, 600, A100, 900)
@@ -9,6 +9,7 @@ const CHART_COLORS = ['#3F51B5', '#536DFE', '#283593', '#7986CB', '#3949AB', '#8
 
 const Dashboard = () => {
   const [timeframe, setTimeframe] = useState('this-month');
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [activeCategoryIndex, setActiveCategoryIndex] = useState(null);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -90,34 +91,60 @@ const Dashboard = () => {
     amount: item.amount || 0,
   }));
 
+  const TIMEFRAME_OPTIONS = [
+    { value: 'this-month', label: 'This Month' },
+    { value: 'last-30-days', label: '30 Days' },
+    { value: 'this-year', label: 'This Year' },
+  ];
+  const activeLabel = TIMEFRAME_OPTIONS.find(opt => opt.value === timeframe)?.label || 'This Month';
+
   return (
     <div className="space-y-5">
-      {/* Timeframe Selector & Title */}
-      <div className="space-y-3">
+      {/* Title & Timeframe Selector Dropdown */}
+      <div className="flex items-center justify-between gap-4 pb-1 relative">
         <div>
-          <h1 className="text-xl font-extrabold text-slate-800 dark:text-slate-100">Analytics</h1>
-          <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">Track your spending trends and summaries.</p>
+          <h1 className="text-lg font-bold text-slate-800 dark:text-slate-100">Analytics</h1>
+          <p className="text-slate-500 dark:text-slate-400 text-[10px] mt-0.5">Track your spending trends and summaries.</p>
         </div>
 
-        {/* Horizontal Scroll Pill Toggles */}
-        <div className="flex bg-slate-200/50 dark:bg-zinc-900 p-1 rounded-xl border border-slate-200 dark:border-zinc-800 w-full justify-between">
-          {[
-            { value: 'this-month', label: 'This Month' },
-            { value: 'last-30-days', label: '30 Days' },
-            { value: 'this-year', label: 'This Year' },
-          ].map((item) => (
-            <button
-              key={item.value}
-              onClick={() => setTimeframe(item.value)}
-              className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all duration-300 text-center active:scale-95 ${
-                timeframe === item.value
-                  ? 'bg-brand-accent text-white shadow-md shadow-brand-accent/20'
-                  : 'text-slate-550 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
+        {/* Custom React Dropdown */}
+        <div className="relative">
+          <button
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+            className="flex items-center justify-between gap-2 text-[11px] font-bold bg-transparent dark:bg-zinc-950/80 border border-brand-accent dark:border-brand-accent text-brand-accent rounded-full px-4 py-1.5 focus:outline-none cursor-pointer transition-all duration-200 active:scale-95 shadow-sm"
+          >
+            <span>{activeLabel}</span>
+            <ChevronDown className={`h-3 w-3 text-brand-accent transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} />
+          </button>
+
+          {/* Floating Popover Menu */}
+          {dropdownOpen && (
+            <>
+              {/* Overlay to close menu on click outside */}
+              <div 
+                className="fixed inset-0 z-40 cursor-default" 
+                onClick={() => setDropdownOpen(false)}
+              />
+              <div className="absolute right-0 mt-2 w-[130px] rounded-2xl bg-white dark:bg-[#181824] border border-slate-200 dark:border-zinc-800/80 p-1.5 shadow-xl z-50 animate-fade-in">
+                {TIMEFRAME_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.value}
+                    onClick={() => {
+                      setTimeframe(opt.value);
+                      setDropdownOpen(false);
+                    }}
+                    className={`w-full text-left px-3 py-2 text-[11px] font-bold rounded-xl transition-colors ${
+                      timeframe === opt.value
+                        ? 'text-brand-accent bg-brand-accent/5 dark:bg-brand-accent/10'
+                        : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-zinc-800/40 hover:text-slate-800 dark:hover:text-slate-100'
+                    }`}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -203,7 +230,7 @@ const Dashboard = () => {
           <Calendar className="h-4 w-4 text-brand-accent" />
           <h3 className="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">Spending Trend</h3>
         </div>
-        <div className="h-[200px] w-full">
+        <div className="h-[160px] w-full">
           {trendData.length > 0 ? (
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={trendData} margin={{ top: 10, right: 5, left: -25, bottom: 0 }}>
@@ -238,10 +265,10 @@ const Dashboard = () => {
       {/* Spending by Category Donut Chart */}
       <div className="glassy-card rounded-2xl p-4">
         <div className="flex items-center gap-1.5 mb-3">
-          <PieIcon className="h-4 w-4 text-[#8C52FF]" />
+          <PieIcon className="h-4 w-4 text-brand-accent" />
           <h3 className="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">Category Distribution</h3>
         </div>
-        <div className="h-[140px] w-full flex items-center justify-center">
+        <div className="w-full flex items-center justify-center py-2">
           {categoryData.length > 0 ? (
             <div className="flex items-center justify-between w-full gap-2">
               {/* Left: Donut Chart with center label */}

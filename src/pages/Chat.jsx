@@ -172,7 +172,7 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex flex-col h-[72vh] relative overflow-hidden">
+    <div className="flex flex-col h-[calc(100vh-190px)] sm:h-[calc(88vh-190px)] sm:max-h-[660px] relative overflow-hidden">
       {/* 429 Toast Alert Banner */}
       {rateLimitMessage && (
         <div className="absolute top-2 left-2 right-2 z-50 flex items-center gap-2 p-3 bg-rose-600 text-white rounded-xl shadow-lg border border-rose-500/20 text-xs font-semibold animate-slide-down">
