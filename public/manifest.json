@@ -1,0 +1,17 @@
+{
+  "short_name": "WalletWiz",
+  "name": "WalletWiz Expense Tracker",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#09090B",
+  "theme_color": "#3F51B5",
+  "display": "standalone",
+  "orientation": "portrait"
+}
