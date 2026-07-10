@@ -15,6 +15,9 @@ const Login = () => {
 
   // Load and initialize Google Identity Services
   useEffect(() => {
+    let resizeTimer;
+    let cleanupResizeListener = () => {};
+
     const initializeGoogle = () => {
       if (window.google) {
         window.google.accounts.id.initialize({
@@ -32,19 +35,40 @@ const Login = () => {
             }
           },
         });
-        window.google.accounts.id.renderButton(
-          document.getElementById('googleSignInDiv'),
-          { 
-            theme: 'filled_black', 
-            size: 'large', 
-            text: 'signin_with',
-            shape: 'rectangular',
-            width: '100%',
+
+        const renderGoogleButton = () => {
+          const container = document.getElementById('googleSignInDiv');
+          if (container) {
+            const calculatedWidth = container.offsetWidth || 384;
+            const buttonWidth = Math.min(400, Math.max(200, calculatedWidth));
+            window.google.accounts.id.renderButton(
+              container,
+              { 
+                theme: 'filled_black', 
+                size: 'large', 
+                text: 'signin_with',
+                shape: 'rectangular',
+                width: buttonWidth,
+              }
+            );
           }
-        );
+        };
+
+        renderGoogleButton();
+
+        const handleResize = () => {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(renderGoogleButton, 150);
+        };
+        
+        window.addEventListener('resize', handleResize);
+        cleanupResizeListener = () => {
+          window.removeEventListener('resize', handleResize);
+        };
       }
     };
 
+    let timer;
     const scriptExists = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
     if (!scriptExists) {
       const script = document.createElement('script');
@@ -54,9 +78,14 @@ const Login = () => {
       script.onload = initializeGoogle;
       document.body.appendChild(script);
     } else {
-      const timer = setTimeout(initializeGoogle, 200);
-      return () => clearTimeout(timer);
+      timer = setTimeout(initializeGoogle, 200);
     }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+      clearTimeout(resizeTimer);
+      cleanupResizeListener();
+    };
   }, [loginWithGoogle, navigate]);
 
   const handleSubmit = async (e) => {
