@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import api from '../services/api';
 import { 
-  Plus, Filter, X, Edit2, Trash2, Calendar, 
-  ChevronLeft, ChevronRight, Landmark, CreditCard, 
-  Banknote, DollarSign, AlertCircle, Loader, CheckCircle2 
+  Plus, Filter, X, Edit2, Trash2, 
+  ChevronLeft, ChevronRight, DollarSign, AlertCircle, Loader, CheckCircle2 
 } from 'lucide-react';
 
 const CATEGORIES = ["Food & Dining", "Shopping", "Travel & Transport", "Bills & Utilities", "Entertainment", "Health & Medical", "Others"];
@@ -172,17 +171,7 @@ const Transactions = () => {
     }).format(val || 0);
   };
 
-  const getPaymentIcon = (method) => {
-    switch (method?.toUpperCase()) {
-      case 'UPI':
-        return <Landmark className="h-5 w-5 text-emerald-500" />;
-      case 'CARD':
-        return <CreditCard className="h-5 w-5 text-indigo-500" />;
-      case 'CASH':
-      default:
-        return <Banknote className="h-5 w-5 text-amber-500" />;
-    }
-  };
+
 
   return (
     <div className="relative min-h-[75vh] space-y-4">
@@ -299,36 +288,44 @@ const Transactions = () => {
           {transactions.map((tx) => (
             <div 
               key={tx.id} 
-              className="glassy-card rounded-2xl p-4 flex items-center justify-between gap-4 active:scale-[0.98] active:bg-slate-100 dark:active:bg-zinc-800/50 transition-all duration-200 cursor-pointer"
+              className="bg-white/80 dark:bg-zinc-900/60 backdrop-blur-md border border-slate-200/60 dark:border-zinc-800/40 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)] rounded-2xl p-4 flex items-center justify-between gap-4 active:scale-[0.98] transition-all duration-300 cursor-pointer hover:border-brand-accent/20 dark:hover:border-brand-accent/25 hover:bg-white/95 dark:hover:bg-zinc-900/80"
               onClick={() => openEditModal(tx)}
             >
               {/* Left Details */}
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="bg-slate-100 dark:bg-zinc-850 p-2.5 rounded-xl border border-slate-200/50 dark:border-zinc-800 text-slate-500 dark:text-slate-300 shrink-0">
-                  {getPaymentIcon(tx.payment_method)}
-                </div>
-                <div className="min-w-0">
-                  <span className="font-bold text-slate-800 dark:text-slate-100 block truncate text-sm">{tx.merchant}</span>
-                  <span className="text-slate-500 dark:text-slate-400 text-[10px] block mt-0.5 uppercase tracking-wider font-semibold">
-                    {tx.category} • {new Date(tx.transaction_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
-                  </span>
-                </div>
+              <div className="min-w-0">
+                <span className="font-bold text-slate-800 dark:text-slate-100 block truncate text-sm">{tx.merchant}</span>
+                <span className="text-slate-500 dark:text-slate-400 text-[10px] block mt-0.5 uppercase tracking-wider font-semibold">
+                  {tx.category} • {new Date(tx.transaction_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
+                </span>
               </div>
 
               {/* Right Side Actions & Value */}
-              <div className="flex items-center gap-3 shrink-0" onClick={(e) => e.stopPropagation()}>
+              <div className="flex items-center gap-2.5 shrink-0" onClick={(e) => e.stopPropagation()}>
                 <div className="text-right">
                   <span className="font-extrabold text-slate-800 dark:text-slate-100 text-sm block">-{formatCurrency(tx.amount)}</span>
                   <span className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase">{tx.payment_method}</span>
                 </div>
                 
-                {/* Delete button */}
-                <button
-                  onClick={() => setDeleteId(tx.id)}
-                  className="p-2 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-500/10 transition-colors active:scale-90"
-                >
-                  <Trash2 className="h-4.5 w-4.5" />
-                </button>
+                {/* Action buttons (Edit & Delete) */}
+                <div className="flex items-center gap-1.5 ml-1">
+                  {/* Edit button */}
+                  <button
+                    onClick={() => openEditModal(tx)}
+                    className="p-2 rounded-lg text-indigo-500 bg-indigo-500/10 hover:bg-indigo-500/20 dark:text-indigo-400 dark:bg-indigoCustom-800/20 dark:hover:bg-indigoCustom-800/30 border border-indigo-500/10 transition-colors active:scale-90"
+                    title="Edit Entry"
+                  >
+                    <Edit2 className="h-3.5 w-3.5" />
+                  </button>
+                  
+                  {/* Delete button */}
+                  <button
+                    onClick={() => setDeleteId(tx.id)}
+                    className="p-2 rounded-lg text-rose-500 bg-rose-500/10 hover:bg-rose-500/20 dark:text-rose-450 dark:bg-rose-500/10 dark:hover:bg-rose-500/20 border border-rose-500/10 transition-colors active:scale-90"
+                    title="Delete Entry"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </button>
+                </div>
               </div>
             </div>
           ))}
