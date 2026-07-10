@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import api from '../services/api';
-import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, PieChart, Pie, Cell, BarChart, Bar } from 'recharts';
-import { TrendingUp, DollarSign, Calendar, Landmark, CreditCard, Banknote, Receipt, AlertCircle, Loader } from 'lucide-react';
+import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, PieChart, Pie, Cell, BarChart, Bar, LabelList } from 'recharts';
+import { TrendingUp, DollarSign, Calendar, Landmark, CreditCard, Banknote, Receipt, AlertCircle, Loader, PieChart as PieIcon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 // Curated Indigo Shades (Indigo 500, A200, 800, 300, 600, A100, 900)
@@ -9,6 +9,7 @@ const CHART_COLORS = ['#3F51B5', '#536DFE', '#283593', '#7986CB', '#3949AB', '#8
 
 const Dashboard = () => {
   const [timeframe, setTimeframe] = useState('this-month');
+  const [activeCategoryIndex, setActiveCategoryIndex] = useState(null);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -127,31 +128,31 @@ const Dashboard = () => {
         </div>
       )}
 
-      {/* Metrics Cards Stacks (Single Column) */}
-      <div className="grid grid-cols-1 gap-3">
+      {/* Metrics Cards Stacks (Side-by-Side) */}
+      <div className="grid grid-cols-2 gap-3">
         {/* Total Spent Card */}
-        <div className="glassy-card relative overflow-hidden rounded-2xl p-5 flex items-center justify-between active:scale-[0.98] transition-transform duration-200 cursor-pointer">
-          <div>
-            <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Total Spent</span>
-            <span className="text-2xl font-extrabold text-slate-800 dark:text-slate-100 block mt-1">
+        <div className="bg-gradient-to-tr from-brand-accent to-indigoCustom-600 border-0 shadow-md shadow-brand-accent/25 text-white relative overflow-hidden rounded-2xl p-4 flex items-center justify-between active:scale-[0.98] transition-transform duration-200 cursor-pointer">
+          <div className="min-w-0">
+            <span className="text-[9px] font-bold text-white/80 uppercase tracking-wider block">Total Spent</span>
+            <span className="text-lg font-black block mt-1 truncate">
               {formatCurrency(data?.total_spent)}
             </span>
           </div>
-          <div className="bg-brand-accent/10 dark:bg-brand-accent/15 p-3.5 rounded-xl text-brand-accent border border-brand-accent/10 shadow-sm shadow-brand-accent/10">
-            <DollarSign className="h-5 w-5" />
+          <div className="bg-white/15 p-2 rounded-xl text-white border border-white/10 shrink-0 ml-1">
+            <DollarSign className="h-4 w-4" />
           </div>
         </div>
 
         {/* Daily Average Card */}
-        <div className="glassy-card relative overflow-hidden rounded-2xl p-5 flex items-center justify-between active:scale-[0.98] transition-transform duration-200 cursor-pointer">
-          <div>
-            <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Daily Average</span>
-            <span className="text-2xl font-extrabold text-slate-800 dark:text-slate-100 block mt-1">
+        <div className="glassy-card relative overflow-hidden rounded-2xl p-4 flex items-center justify-between active:scale-[0.98] transition-transform duration-200 cursor-pointer">
+          <div className="min-w-0">
+            <span className="text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Daily Average</span>
+            <span className="text-lg font-black text-slate-800 dark:text-slate-100 block mt-1 truncate">
               {formatCurrency(data?.daily_average)}
             </span>
           </div>
-          <div className="bg-indigoCustom-800/10 dark:bg-indigoCustom-800/15 p-3.5 rounded-xl text-[#283593] dark:text-indigoCustom-300 border border-indigoCustom-800/10">
-            <TrendingUp className="h-5 w-5" />
+          <div className="bg-indigoCustom-800/10 dark:bg-indigoCustom-800/15 p-2 rounded-xl text-[#283593] dark:text-indigoCustom-300 border border-indigoCustom-800/10 shrink-0 ml-1">
+            <TrendingUp className="h-4 w-4" />
           </div>
         </div>
       </div>
@@ -236,47 +237,76 @@ const Dashboard = () => {
 
       {/* Spending by Category Donut Chart */}
       <div className="glassy-card rounded-2xl p-4">
-        <h3 className="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider mb-3">By Category</h3>
-        <div className="h-[220px] w-full flex flex-col justify-center">
+        <div className="flex items-center gap-1.5 mb-3">
+          <PieIcon className="h-4 w-4 text-[#8C52FF]" />
+          <h3 className="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">Category Distribution</h3>
+        </div>
+        <div className="h-[140px] w-full flex items-center justify-center">
           {categoryData.length > 0 ? (
-            <>
-              <div className="h-[130px]">
+            <div className="flex items-center justify-between w-full gap-2">
+              {/* Left: Donut Chart with center label */}
+              <div className="relative w-[110px] h-[110px] shrink-0 drop-shadow-[0_4px_10px_rgba(0,0,0,0.12)] dark:drop-shadow-[0_6px_12px_rgba(0,0,0,0.35)]">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
                       data={categoryData}
-                      innerRadius={40}
-                      outerRadius={55}
-                      paddingAngle={3}
+                      innerRadius={35}
+                      outerRadius={47}
+                      paddingAngle={2}
                       dataKey="value"
+                      stroke="none"
                     >
                       {categoryData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                        <Cell 
+                          key={`cell-${index}`} 
+                          fill={CHART_COLORS[index % CHART_COLORS.length]} 
+                          onMouseEnter={() => setActiveCategoryIndex(index)}
+                          onMouseLeave={() => setActiveCategoryIndex(null)}
+                          className="cursor-pointer outline-none transition-all duration-200"
+                        />
                       ))}
                     </Pie>
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: theme === 'dark' ? '#18181b' : '#ffffff', 
-                        border: theme === 'dark' ? '1px solid #27272a' : '1px solid #e4e4e7', 
-                        borderRadius: '12px',
-                        color: theme === 'dark' ? '#fff' : '#000'
-                      }}
-                      itemStyle={{ color: theme === 'dark' ? '#fff' : '#18181b', fontSize: '11px' }}
-                      formatter={(value) => [formatCurrency(value), '']}
-                    />
                   </PieChart>
                 </ResponsiveContainer>
+                <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                  <span className="text-[8px] font-bold uppercase tracking-wider text-slate-400 dark:text-zinc-500">
+                    Share
+                  </span>
+                  <span className="text-xs font-black text-slate-800 dark:text-slate-100 truncate max-w-[70px] leading-tight">
+                    {activeCategoryIndex !== null 
+                      ? `${categoryData[activeCategoryIndex].percentage}%` 
+                      : '100%'}
+                  </span>
+                </div>
               </div>
-              {/* Custom Legend */}
-              <div className="mt-3 grid grid-cols-2 gap-1.5 max-h-[70px] overflow-y-auto pr-1">
+
+              {/* Right: Custom Legend with values */}
+              <div className="flex-1 flex flex-col justify-center gap-2 max-h-[110px] overflow-y-auto pr-1">
                 {categoryData.map((item, index) => (
-                  <div key={item.name} className="flex items-center gap-1.5 text-[10px] text-slate-500 dark:text-slate-400">
-                    <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: CHART_COLORS[index % CHART_COLORS.length] }}></span>
-                    <span className="truncate">{item.name} ({item.percentage}%)</span>
+                  <div 
+                    key={item.name} 
+                    className={`flex items-center justify-between text-[11px] transition-all duration-200 cursor-pointer ${
+                      activeCategoryIndex === index 
+                        ? 'opacity-100 scale-[1.02]' 
+                        : activeCategoryIndex !== null 
+                          ? 'opacity-40' 
+                          : 'opacity-100'
+                    }`}
+                    onMouseEnter={() => setActiveCategoryIndex(index)}
+                    onMouseLeave={() => setActiveCategoryIndex(null)}
+                  >
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: CHART_COLORS[index % CHART_COLORS.length] }}></span>
+                      <span className="font-bold text-slate-700 dark:text-slate-350 truncate">{item.name}</span>
+                    </div>
+                    <span className="font-extrabold text-slate-800 dark:text-slate-100 shrink-0 ml-1.5">
+                      {formatCurrency(item.value)}{' '}
+                      <span className="text-[9px] text-slate-500 dark:text-slate-400 font-medium">({item.percentage}%)</span>
+                    </span>
                   </div>
                 ))}
               </div>
-            </>
+            </div>
           ) : (
             <div className="flex items-center justify-center h-full text-slate-400 dark:text-slate-500 text-[10px]">No category records.</div>
           )}
@@ -285,13 +315,32 @@ const Dashboard = () => {
 
       {/* Spending by Payment Method Bar Chart */}
       <div className="glassy-card rounded-2xl p-4">
-        <h3 className="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider mb-3">By Payment Method</h3>
-        <div className="h-[180px] w-full">
+        <div className="flex items-center gap-1.5 mb-3">
+          <CreditCard className="h-4 w-4 text-[#536DFE]" />
+          <h3 className="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-wider">By Payment Method</h3>
+        </div>
+        <div className="w-full">
           {paymentData.length > 0 ? (
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={paymentData} margin={{ top: 10, right: 5, left: -25, bottom: 0 }}>
-                <XAxis dataKey="name" stroke={theme === 'dark' ? '#52525b' : '#a1a1aa'} fontSize={9} tickLine={false} axisLine={false} />
-                <YAxis stroke={theme === 'dark' ? '#52525b' : '#a1a1aa'} fontSize={9} tickLine={false} axisLine={false} />
+            <div style={{ height: `${paymentData.length * 45 + 10}px` }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart 
+                  layout="vertical"
+                  data={paymentData} 
+                  margin={{ top: 5, right: 40, left: -25, bottom: 5 }}
+                >
+                <XAxis 
+                  type="number" 
+                  hide 
+                />
+                <YAxis 
+                  type="category" 
+                  dataKey="name" 
+                  stroke={theme === 'dark' ? '#a1a1aa' : '#52525b'} 
+                  fontSize={10} 
+                  tickLine={false} 
+                  axisLine={false}
+                  width={70}
+                />
                 <Tooltip 
                   contentStyle={{ 
                     backgroundColor: theme === 'dark' ? '#18181b' : '#ffffff', 
@@ -302,13 +351,24 @@ const Dashboard = () => {
                   itemStyle={{ color: theme === 'dark' ? '#fff' : '#18181b', fontSize: '11px' }}
                   formatter={(value) => [formatCurrency(value), 'Total']}
                 />
-                <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+                <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={12}>
                   {paymentData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={CHART_COLORS[(index + 1) % CHART_COLORS.length]} />
                   ))}
+                  <LabelList 
+                    dataKey="value" 
+                    position="right" 
+                    formatter={formatCurrency} 
+                    style={{ 
+                      fontSize: '9px', 
+                      fontWeight: 700, 
+                      fill: theme === 'dark' ? '#cbd5e1' : '#334155' 
+                    }} 
+                  />
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
+          </div>
           ) : (
             <div className="flex items-center justify-center h-full text-slate-400 dark:text-slate-500 text-[10px]">No payment records.</div>
           )}

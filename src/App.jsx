@@ -21,9 +21,9 @@ const Layout = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-brand-dark text-slate-800 dark:text-slate-100 overflow-x-hidden relative">
+    <div className="flex flex-col min-h-screen bg-slate-100 dark:bg-zinc-950 text-slate-800 dark:text-slate-100 overflow-x-hidden relative">
       {/* Full-Width Fixed Top Header (Clean boundary to hide scrolled content) */}
-      <header className="flex items-center justify-between h-16 px-4 bg-white/95 dark:bg-zinc-950/95 border-b border-slate-200 dark:border-zinc-900 backdrop-blur-md fixed top-0 left-0 right-0 z-30 max-w-md mx-auto">
+      <header className="flex items-center justify-between h-16 px-4 bg-white/95 dark:bg-zinc-950/95 border-x border-b border-slate-200/80 dark:border-zinc-900/80 backdrop-blur-md fixed top-0 left-0 right-0 z-30 max-w-md mx-auto shadow-sm">
         <div className="flex items-center gap-2">
           <div className="bg-brand-accent p-1.5 rounded-lg text-white shadow-md shadow-brand-accent/20">
             <Wallet className="h-5 w-5" />
@@ -55,12 +55,12 @@ const Layout = () => {
       </header>
 
       {/* Main Page Area wrapped to fit mobile screen and prevent nav bar clipping */}
-      <main className="flex-1 w-full max-w-md mx-auto pt-20 pb-24 px-4 bg-slate-50 dark:bg-brand-dark">
+      <main className="flex-1 w-full max-w-md mx-auto pt-20 pb-24 px-4 bg-slate-50 dark:bg-brand-dark border-x border-slate-200/80 dark:border-zinc-900/80 min-h-screen">
         <Outlet />
       </main>
 
       {/* Full-Width Fixed Bottom Navigation Bar (No leaking scroll text below) */}
-      <nav className="flex items-center justify-between h-16 bg-white/95 dark:bg-zinc-950/95 border-t border-slate-200 dark:border-zinc-900 fixed bottom-0 left-0 right-0 z-30 max-w-md mx-auto px-10">
+      <nav className="flex items-center justify-between h-16 bg-white/95 dark:bg-zinc-950/95 border-x border-t border-slate-200/80 dark:border-zinc-900/80 fixed bottom-0 left-0 right-0 z-30 max-w-md mx-auto px-10 shadow-lg">
         <NavLink
           to="/"
           className={({ isActive }) =>
