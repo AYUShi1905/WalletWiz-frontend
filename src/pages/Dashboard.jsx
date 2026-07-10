@@ -355,45 +355,64 @@ const Dashboard = () => {
                   data={paymentData} 
                   margin={{ top: 5, right: 40, left: -25, bottom: 5 }}
                 >
-                <XAxis 
-                  type="number" 
-                  hide 
-                />
-                <YAxis 
-                  type="category" 
-                  dataKey="name" 
-                  stroke={theme === 'dark' ? '#a1a1aa' : '#52525b'} 
-                  fontSize={10} 
-                  tickLine={false} 
-                  axisLine={false}
-                  width={70}
-                />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: theme === 'dark' ? '#18181b' : '#ffffff', 
-                    border: theme === 'dark' ? '1px solid #27272a' : '1px solid #e4e4e7', 
-                    borderRadius: '12px',
-                    color: theme === 'dark' ? '#fff' : '#000'
-                  }}
-                  itemStyle={{ color: theme === 'dark' ? '#fff' : '#18181b', fontSize: '11px' }}
-                  formatter={(value) => [formatCurrency(value), 'Total']}
-                />
-                <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={12}>
-                  {paymentData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={CHART_COLORS[(index + 1) % CHART_COLORS.length]} />
-                  ))}
-                  <LabelList 
-                    dataKey="value" 
-                    position="right" 
-                    formatter={formatCurrency} 
-                    style={{ 
-                      fontSize: '9px', 
-                      fontWeight: 700, 
-                      fill: theme === 'dark' ? '#cbd5e1' : '#334155' 
-                    }} 
+                  <defs>
+                    <linearGradient id="grad-blue-0" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#536DFE" stopOpacity={0.85} />
+                      <stop offset="100%" stopColor="#3F51B5" stopOpacity={1} />
+                    </linearGradient>
+                    <linearGradient id="grad-blue-1" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#7986CB" stopOpacity={0.85} />
+                      <stop offset="100%" stopColor="#3949AB" stopOpacity={1} />
+                    </linearGradient>
+                    <linearGradient id="grad-blue-2" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#8C9EFF" stopOpacity={0.85} />
+                      <stop offset="100%" stopColor="#536DFE" stopOpacity={1} />
+                    </linearGradient>
+                    <linearGradient id="grad-blue-3" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#3F51B5" stopOpacity={0.85} />
+                      <stop offset="100%" stopColor="#1A237E" stopOpacity={1} />
+                    </linearGradient>
+                  </defs>
+                  <XAxis 
+                    type="number" 
+                    hide 
                   />
-                </Bar>
-              </BarChart>
+                  <YAxis 
+                    type="category" 
+                    dataKey="name" 
+                    stroke={theme === 'dark' ? '#a1a1aa' : '#52525b'} 
+                    fontSize={10} 
+                    tickLine={false} 
+                    axisLine={false}
+                    width={70}
+                  />
+                  <Tooltip 
+                    cursor={false}
+                    contentStyle={{ 
+                      backgroundColor: theme === 'dark' ? '#18181b' : '#ffffff', 
+                      border: theme === 'dark' ? '1px solid #27272a' : '1px solid #e4e4e7', 
+                      borderRadius: '12px',
+                      color: theme === 'dark' ? '#fff' : '#000'
+                    }}
+                    itemStyle={{ color: theme === 'dark' ? '#fff' : '#18181b', fontSize: '11px' }}
+                    formatter={(value) => [formatCurrency(value), 'Total']}
+                  />
+                  <Bar dataKey="value" radius={[0, 8, 8, 0]} barSize={16}>
+                    {paymentData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={`url(#grad-blue-${index % 4})`} />
+                    ))}
+                    <LabelList 
+                      dataKey="value" 
+                      position="right" 
+                      formatter={formatCurrency} 
+                      style={{ 
+                        fontSize: '9px', 
+                        fontWeight: 700, 
+                        fill: theme === 'dark' ? '#cbd5e1' : '#334155' 
+                      }} 
+                    />
+                  </Bar>
+                </BarChart>
             </ResponsiveContainer>
           </div>
           ) : (

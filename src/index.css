@@ -15,3 +15,11 @@ body, header, nav, main, select, input, textarea, button, .glassy-card {
 .glassy-card {
   @apply bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800/80 shadow-sm dark:shadow-md;
 }
+
+/* Remove outline border from Recharts when clicked or focused */
+.recharts-wrapper:focus, 
+.recharts-wrapper *:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
