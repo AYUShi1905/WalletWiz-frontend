@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import api from '../services/api';
 import { 
   Plus, Filter, X, Edit2, Trash2, 
-  ChevronLeft, ChevronRight, DollarSign, AlertCircle, Loader, CheckCircle2 
+  ChevronLeft, ChevronRight, DollarSign, AlertCircle, Loader, CheckCircle2, Search 
 } from 'lucide-react';
 
 const CATEGORIES = ["Food & Dining", "Shopping", "Travel & Transport", "Bills & Utilities", "Entertainment", "Health & Medical", "Others"];
@@ -15,6 +15,7 @@ const Transactions = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Filters State
   const [showFilters, setShowFilters] = useState(false);
@@ -170,8 +171,57 @@ const Transactions = () => {
       currency: 'INR',
     }).format(val || 0);
   };
+  const getFilteredTransactions = () => {
+    if (!searchQuery.trim()) return transactions;
+    const q = searchQuery.toLowerCase().trim();
 
+    return transactions.filter((tx) => {
+      // 1. Merchant match
+      const merchantMatch = (tx.merchant || '').toLowerCase().includes(q);
+      // 2. Description match
+      const descMatch = (tx.description || '').toLowerCase().includes(q);
+      // 3. Category match
+      const categoryMatch = (tx.category || '').toLowerCase().includes(q);
+      // 4. Payment method match
+      const paymentMatch = (tx.payment_method || '').toLowerCase().includes(q);
+      // 5. Amount match (if they search for a number)
+      const amountMatch = tx.amount.toString().includes(q);
+      // 6. Semantic synonyms mapping
+      let synonymMatch = false;
+      
+      // Synonym group mapping
+      const synonyms = {
+        food: ['food', 'dining', 'eat', 'dinner', 'lunch', 'breakfast', 'restaurant', 'cafe', 'starbucks', 'coffee', 'mcdonalds', 'pizza', 'burger'],
+        shopping: ['shop', 'shopping', 'clothes', 'dress', 'shoes', 'amazon', 'flipkart', 'store', 'mall', 'grocery', 'supermarket'],
+        travel: ['travel', 'transport', 'uber', 'ola', 'cab', 'taxi', 'flight', 'train', 'bus', 'fuel', 'petrol', 'diesel', 'metro'],
+        bills: ['bills', 'utilities', 'rent', 'electricity', 'water', 'gas', 'recharge', 'wifi', 'internet', 'mobile', 'subscription', 'netflix', 'spotify'],
+        entertainment: ['entertainment', 'movie', 'cinema', 'game', 'gaming', 'show', 'concert', 'park', 'fun', 'club', 'bar'],
+        health: ['health', 'medical', 'medicine', 'hospital', 'doctor', 'clinic', 'pharmacy', 'gym', 'workout', 'insurance'],
+        others: ['other', 'misc', 'miscellaneous']
+      };
 
+      for (const [categoryKey, keywords] of Object.entries(synonyms)) {
+        if (keywords.includes(q)) {
+          // If the query is a synonym for a category, check if this transaction belongs to that category
+          const categoryName = {
+            food: 'Food & Dining',
+            shopping: 'Shopping',
+            travel: 'Travel & Transport',
+            bills: 'Bills & Utilities',
+            entertainment: 'Entertainment',
+            health: 'Health & Medical',
+            others: 'Others'
+          }[categoryKey];
+          
+          if (tx.category === categoryName) {
+            synonymMatch = true;
+          }
+        }
+      }
+
+      return merchantMatch || descMatch || categoryMatch || paymentMatch || amountMatch || synonymMatch;
+    });
+  };
 
   return (
     <div className="relative min-h-0 space-y-4">
@@ -196,12 +246,32 @@ const Transactions = () => {
           className={`flex items-center gap-1.5 py-2 px-3.5 rounded-xl border text-xs font-semibold transition-all duration-300 active:scale-95 ${
             showFilters || categoryFilter || paymentFilter || startDate || endDate
               ? 'bg-brand-accent/20 border-brand-accent text-brand-accent'
-              : 'bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300'
+              : 'bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-650 dark:text-slate-350'
           }`}
         >
           <Filter className="h-4 w-4" />
           Filters
         </button>
+      </div>
+
+      {/* Search Input Block */}
+      <div className="relative w-full">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400 dark:text-slate-500" />
+        <input
+          type="text"
+          placeholder="Semantic search (e.g. coffee, uber, bills...)"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full pl-9 pr-8 py-2 text-xs bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-850 rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-accent text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-550 shadow-sm"
+        />
+        {searchQuery && (
+          <button
+            onClick={() => setSearchQuery('')}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
+          >
+            <X className="h-3 w-3" />
+          </button>
+        )}
       </div>
 
       {/* Collapsible Filter Bar */}
@@ -278,14 +348,18 @@ const Transactions = () => {
           <AlertCircle className="h-4 w-4 shrink-0" />
           <span>{error}</span>
         </div>
-      ) : transactions.length === 0 ? (
+      ) : getFilteredTransactions().length === 0 ? (
         <div className="py-20 text-center space-y-1">
           <p className="text-slate-400 dark:text-slate-500 text-sm">No transaction records found.</p>
-          <p className="text-slate-500 dark:text-slate-600 text-xs">Tap the floating plus button to log an expense.</p>
+          {searchQuery ? (
+            <p className="text-slate-500 dark:text-slate-650 text-xs">Try searching for a different keyword.</p>
+          ) : (
+            <p className="text-slate-500 dark:text-slate-600 text-xs">Tap the floating plus button to log an expense.</p>
+          )}
         </div>
       ) : (
         <div className="space-y-3 pb-24">
-          {transactions.map((tx) => (
+          {getFilteredTransactions().map((tx) => (
             <div 
               key={tx.id} 
               className="bg-white/80 dark:bg-zinc-900/60 backdrop-blur-md border border-slate-200/60 dark:border-zinc-800/40 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)] rounded-2xl p-4 flex items-center justify-between gap-4 active:scale-[0.98] transition-all duration-300 cursor-pointer hover:border-brand-accent/20 dark:hover:border-brand-accent/25 hover:bg-white/95 dark:hover:bg-zinc-900/80"
